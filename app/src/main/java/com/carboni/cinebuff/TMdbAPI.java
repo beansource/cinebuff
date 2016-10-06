@@ -20,6 +20,9 @@ public interface TMdbAPI {
     @GET("search/person?api_key=4dd1ed8cbc9fe2a51c02805bddc7d390")
     Call<Person> searchPerson(@Query("query") String query);
 
+    /*
+    Testing purposes
+     */
     @GET("search/person?api_key=4dd1ed8cbc9fe2a51c02805bddc7d390&query=brad%20pitt&language=en")
     Call<ResponseBody> getAll();
 
