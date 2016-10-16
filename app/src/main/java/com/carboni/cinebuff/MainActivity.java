@@ -14,6 +14,8 @@ import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -43,34 +45,21 @@ public class MainActivity extends AppCompatActivity {
                         .build();
 
                 TMdbAPI tMdbAPI = retrofit.create(TMdbAPI.class);
-                /*Call<Person> call = tMdbAPI.searchPerson(editTextQuery.getText().toString());
+
+                Call<Person> call = tMdbAPI.searchPerson(editTextQuery.getText().toString());
                 call.enqueue(new Callback<Person>() {
                     @Override
                     public void onResponse(Call<Person> call, Response<Person> response) {
-                        Toast.makeText(getApplicationContext(), "Success" + response.message(), Toast.LENGTH_SHORT).show();
-                        Person person = response.body();
+                        List<Result> people = response.body().getResults();
+                        Toast.makeText(getApplicationContext(), "Number of results: " + people.size(), Toast.LENGTH_SHORT).show();
+                        for (int i = 0; i < people.size(); i++) {
+                            Toast.makeText(getApplicationContext(), "" + people.get(i).getName() + "\n" + people.get(i).getId(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<Person> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-
-                Call<ResponseBody> newCall = tMdbAPI.getAll();
-                newCall.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            Toast.makeText(getApplicationContext(), response.body().string().toString(), Toast.LENGTH_LONG).show();
-                        } catch(IOException e) {
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-
                     }
                 });
             }
