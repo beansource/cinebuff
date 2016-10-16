@@ -1,12 +1,13 @@
 package com.carboni.cinebuff;
 
 import com.carboni.cinebuff.model.Person;
+import com.carboni.cinebuff.model.Result;
 
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -17,8 +18,13 @@ public interface TMdbAPI {
     // Request method and URL specified in the annotation
     // Callback for the parsed response is the last parameter
 
+    // Never actually store api key here in plain text
+
     @GET("search/person?api_key=4dd1ed8cbc9fe2a51c02805bddc7d390")
     Call<Person> searchPerson(@Query("query") String query);
+
+    @GET("discover/movie?api_key=4dd1ed8cbc9fe2a51c02805bddc7d390")
+    Call getMovies(@Query("with_people") String query);
 
     /*
     Testing purposes
