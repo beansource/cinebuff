@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,11 +15,8 @@ import android.widget.Toast;
 import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,9 +32,45 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final EditText editTextQuery = (EditText) findViewById(R.id.editTextPersonQuery);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.INVISIBLE);
+
+        final EditText editTextQuery = (EditText) findViewById(R.id.editTextPersonQuery);
+        editTextQuery.addTextChangedListener(new TextWatcher() {
+            FloatingActionButton fab;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                fab = (FloatingActionButton) findViewById(R.id.fab);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    fab.show();
+                } else if (s.length() == 0) {
+                    fab.hide();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        DelayAutoCompleteTextView search = (DelayAutoCompleteTextView) findViewById(R.id.personAutoComplete);
+        search.setThreshold(5); // min number of characters before dropdown is shown
+        search.setAdapter(new AutoCompleteAdapter(this));
+        search.setLoadingIndicator((android.widget.ProgressBar) findViewById(R.id.loading_indicator));
+        /*search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Result result = (Result) parent.getItemAtPosition(position);
+                search.setText(result.getName());
+            }
+        });*/
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<Person> call, Response<Person> response) {
                         List<Result> people = response.body().getResults();
                         Toast.makeText(getApplicationContext(), "Number of results: " + people.size(), Toast.LENGTH_SHORT).show();
-                        for (int i = 0; i < people.size(); i++) {
-                            Toast.makeText(getApplicationContext(), "" + people.get(i).getName() + "\n" + people.get(i).getId(), Toast.LENGTH_SHORT).show();
+                        for (Result name : people) {
+                            Toast.makeText(getApplicationContext(), name.getName() + "\n" + name.getId(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -86,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
 }
