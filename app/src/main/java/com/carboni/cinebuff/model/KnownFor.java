@@ -36,24 +36,10 @@ public class KnownFor {
     }
 
     /**
-     * @param posterPath The poster_path
-     */
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
-    }
-
-    /**
      * @return The adult
      */
     public Boolean getAdult() {
         return adult;
-    }
-
-    /**
-     * @param adult The adult
-     */
-    public void setAdult(Boolean adult) {
-        this.adult = adult;
     }
 
     /**
@@ -64,24 +50,10 @@ public class KnownFor {
     }
 
     /**
-     * @param overview The overview
-     */
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
-    /**
      * @return The releaseDate
      */
     public String getReleaseDate() {
         return releaseDate;
-    }
-
-    /**
-     * @param releaseDate The release_date
-     */
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     /**
@@ -92,24 +64,10 @@ public class KnownFor {
     }
 
     /**
-     * @param originalTitle The original_title
-     */
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
-    /**
      * @return The genreIds
      */
     public List<Integer> getGenreIds() {
         return genreIds;
-    }
-
-    /**
-     * @param genreIds The genre_ids
-     */
-    public void setGenreIds(List<Integer> genreIds) {
-        this.genreIds = genreIds;
     }
 
     /**
@@ -120,24 +78,10 @@ public class KnownFor {
     }
 
     /**
-     * @param id The id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
      * @return The mediaType
      */
     public String getMediaType() {
         return mediaType;
-    }
-
-    /**
-     * @param mediaType The media_type
-     */
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
     }
 
     /**
@@ -148,24 +92,10 @@ public class KnownFor {
     }
 
     /**
-     * @param originalLanguage The original_language
-     */
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
-    /**
      * @return The title
      */
     public String getTitle() {
         return title;
-    }
-
-    /**
-     * @param title The title
-     */
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     /**
@@ -176,24 +106,10 @@ public class KnownFor {
     }
 
     /**
-     * @param backdropPath The backdrop_path
-     */
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
-    }
-
-    /**
      * @return The popularity
      */
     public Double getPopularity() {
         return popularity;
-    }
-
-    /**
-     * @param popularity The popularity
-     */
-    public void setPopularity(Double popularity) {
-        this.popularity = popularity;
     }
 
     /**
@@ -204,24 +120,10 @@ public class KnownFor {
     }
 
     /**
-     * @param voteCount The vote_count
-     */
-    public void setVoteCount(Integer voteCount) {
-        this.voteCount = voteCount;
-    }
-
-    /**
      * @return The video
      */
     public Boolean getVideo() {
         return video;
-    }
-
-    /**
-     * @param video The video
-     */
-    public void setVideo(Boolean video) {
-        this.video = video;
     }
 
     /**
@@ -231,19 +133,9 @@ public class KnownFor {
         return voteAverage;
     }
 
-    /**
-     * @param voteAverage The vote_average
-     */
-    public void setVoteAverage(Double voteAverage) {
-        this.voteAverage = voteAverage;
-    }
-
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 
 }
