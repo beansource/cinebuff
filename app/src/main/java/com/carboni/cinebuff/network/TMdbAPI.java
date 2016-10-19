@@ -1,12 +1,9 @@
-package com.carboni.cinebuff;
+package com.carboni.cinebuff.network;
 
 import com.carboni.cinebuff.model.Person;
-import com.carboni.cinebuff.model.Result;
-
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
