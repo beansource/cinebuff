@@ -9,14 +9,19 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
 import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
+import com.carboni.cinebuff.network.TMdbAPI;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,24 +29,26 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.editTextPersonQuery)
+    EditText editTextQuery;
+    @BindView(R.id.personAutoComplete)
+    DelayAutoCompleteTextView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.INVISIBLE);
-
-        final EditText editTextQuery = (EditText) findViewById(R.id.editTextPersonQuery);
         editTextQuery.addTextChangedListener(new TextWatcher() {
-            FloatingActionButton fab;
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                fab = (FloatingActionButton) findViewById(R.id.fab);
             }
 
             @Override
@@ -59,17 +66,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DelayAutoCompleteTextView search = (DelayAutoCompleteTextView) findViewById(R.id.personAutoComplete);
-        search.setThreshold(5); // min number of characters before dropdown is shown
-        search.setAdapter(new AutoCompleteAdapter(this));
-        search.setLoadingIndicator((android.widget.ProgressBar) findViewById(R.id.loading_indicator));
-        /*search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        searchView.setThreshold(3); // min number of characters before dropdown is shown
+        searchView.setAdapter(new AutoCompleteAdapter(this));
+        searchView.setLoadingIndicator((android.widget.ProgressBar) findViewById(R.id.loading_indicator));
+        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Result result = (Result) parent.getItemAtPosition(position);
-                search.setText(result.getName());
+                Toast.makeText(getApplicationContext(), "Pressed " + result.getName() + " " + result.getId(), Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
