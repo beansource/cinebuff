@@ -43,4 +43,11 @@ dependencies {
     compile 'com.google.dagger:dagger:2.7'
     provided 'javax.annotation:jsr250-api:1.0'
 
+    // Butterknife
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    // RxJava
+    compile 'io.reactivex:rxjava:1.2.1'
+
 }
