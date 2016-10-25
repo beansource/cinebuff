@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,33 +77,31 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Pressed " + result.getName() + " " + result.getId(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        fab.setOnClickListener(new View.OnClickListener() {
+    @OnClick(R.id.fab)
+    void onFabClick() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.themoviedb.org/3/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TMdbAPI tMdbAPI = retrofit.create(TMdbAPI.class);
+
+        Call<Person> call = tMdbAPI.searchPerson(editTextQuery.getText().toString());
+        call.enqueue(new Callback<Person>() {
             @Override
-            public void onClick(View view) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://api.themoviedb.org/3/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+            public void onResponse(Call<Person> call, Response<Person> response) {
+                List<Result> people = response.body().getResults();
+                Toast.makeText(getApplicationContext(), "Number of results: " + people.size(), Toast.LENGTH_SHORT).show();
+                for (Result name : people) {
+                    Toast.makeText(getApplicationContext(), name.getName() + "\n" + name.getId(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
-                TMdbAPI tMdbAPI = retrofit.create(TMdbAPI.class);
-
-                Call<Person> call = tMdbAPI.searchPerson(editTextQuery.getText().toString());
-                call.enqueue(new Callback<Person>() {
-                    @Override
-                    public void onResponse(Call<Person> call, Response<Person> response) {
-                        List<Result> people = response.body().getResults();
-                        Toast.makeText(getApplicationContext(), "Number of results: " + people.size(), Toast.LENGTH_SHORT).show();
-                        for (Result name : people) {
-                            Toast.makeText(getApplicationContext(), name.getName() + "\n" + name.getId(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Person> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            @Override
+            public void onFailure(Call<Person> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
