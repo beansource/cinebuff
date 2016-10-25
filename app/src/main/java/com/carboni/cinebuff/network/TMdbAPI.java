@@ -12,21 +12,18 @@ import retrofit2.http.Query;
  */
 
 public interface TMdbAPI {
-    // Request method and URL specified in the annotation
-    // Callback for the parsed response is the last parameter
+    String API_KEY = "4dd1ed8cbc9fe2a51c02805bddc7d390";
 
-    // Never actually store api key here in plain text
-
-    @GET("search/person?api_key=4dd1ed8cbc9fe2a51c02805bddc7d390")
+    @GET("search/person?api_key=" + API_KEY)
     Call<Person> searchPerson(@Query("query") String query);
 
-    @GET("discover/movie?api_key=4dd1ed8cbc9fe2a51c02805bddc7d390")
+    @GET("discover/movie?api_key=" + API_KEY)
     Call getMovies(@Query("with_people") String query);
 
     /*
     Testing purposes
      */
-    @GET("search/person?api_key=4dd1ed8cbc9fe2a51c02805bddc7d390&query=brad%20pitt&language=en")
+    @GET("search/person?api_key=" + API_KEY + "&query=brad%20pitt&language=en")
     Call<ResponseBody> getAll();
 
 }
