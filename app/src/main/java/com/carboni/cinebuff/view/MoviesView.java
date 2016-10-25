@@ -5,4 +5,11 @@ package com.carboni.cinebuff.view;
  */
 
 public interface MoviesView extends View {
+
+    void showMovies();
+
+    void showLoading();
+
+    void showError();
+
 }

@@ -5,4 +5,11 @@ package com.carboni.cinebuff.view;
  */
 
 public interface PersonView extends View {
+    
+    void showPerson();
+
+    void showLoading();
+
+    void showError();
+
 }
