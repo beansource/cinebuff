@@ -1,4 +1,4 @@
-package com.carboni.cinebuff.Interactors;
+package com.carboni.cinebuff.interactors;
 
 /**
  * Created by ericcarboni on 10/25/16.
