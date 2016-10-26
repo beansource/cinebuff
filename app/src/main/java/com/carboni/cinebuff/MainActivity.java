@@ -17,6 +17,8 @@ import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
 import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
 import com.carboni.cinebuff.network.TMdbAPI;
+import com.carboni.cinebuff.presenter.MainPresenter;
+import com.carboni.cinebuff.view.MainView;
 
 import java.util.List;
 
@@ -29,9 +31,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.editTextPersonQuery)
@@ -39,11 +43,16 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.personAutoComplete)
     DelayAutoCompleteTextView searchView;
 
+    MainPresenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        // Giving our MainPresenter a reference to the View
+        presenter = new MainPresenter(this);
 
         setSupportActionBar(toolbar);
         fab.setVisibility(View.INVISIBLE);
@@ -79,8 +88,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+    Gather user input and pass to the presenter
+     */
     @OnClick(R.id.fab)
     void onFabClick() {
+        String query = editTextQuery.getText().toString();
+        presenter.attemptSearch(query);
+
+        /* TODO: Move API logic out of here
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.themoviedb.org/3/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -104,6 +120,17 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+        */
+    }
+
+    @Override
+    public void populatePeople() {
+        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void searchFailed() {
+        Toast.makeText(this, "Validation failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
