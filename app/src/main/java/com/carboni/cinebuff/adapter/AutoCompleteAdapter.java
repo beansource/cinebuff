@@ -1,23 +1,21 @@
-package com.carboni.cinebuff;
+package com.carboni.cinebuff.adapter;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.carboni.cinebuff.R;
 import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
+import com.carboni.cinebuff.network.PersonFetcher;
+import com.carboni.cinebuff.network.TMdbAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +31,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
+    private static final String TAG = "AutoCompleteAdapter";
     public static List<Result> resultList;
     public static List<Result> fromApi;
     private Context mContext;
 
     public AutoCompleteAdapter(Context context) {
+        Log.i(TAG, "Constructor called");
         mContext = context;
         resultList = new ArrayList<Result>();
         fromApi = new ArrayList<Result>();
@@ -45,7 +45,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i("TAG", "getView() called");
+        Log.i(TAG, "getView() called");
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.auto_complete_item, parent, false);
@@ -60,25 +60,24 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         final Filter filter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
+                Log.i(TAG, "performFiltering() called");
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     // resultList.clear();
-                    Log.i("TAG", "performFiltering() with " + constraint.toString());
-                    // constraint.toString() is query from user
+                    Log.i(TAG, "performFiltering() with " + constraint.toString());
+                    PersonFetcher fetch = new PersonFetcher(constraint.toString());
                     resultList = getApi(constraint.toString());
                     filterResults.values = resultList;
                     filterResults.count = resultList.size();
-                    // Log.i("performFiltering()", "Count: " + filterResults.count + "\nNames: " + filterResults.values.toString());
                     notifyDataSetChanged();
-                    // return filterResults;
                 }
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
+                Log.i(TAG, "publishResults() called");
                 if (results != null && results.count > 0) {
-                    // Log.i("TAG", "clear() called");
                     // resultList.clear();
 
                     /*resultList = (List<Result>) results.values;
@@ -89,7 +88,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
 
                     notifyDataSetChanged();
                 } else {
-                    Log.i("TAG", "Results null or count < 0");
+                    Log.i(TAG, "Results null or count < 0");
                     notifyDataSetInvalidated();
                 }
             }
@@ -98,6 +97,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     }
 
     public List<Result> getApi(String constraint) {
+        Log.i(TAG, "API called");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.themoviedb.org/3/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -108,9 +108,10 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         call.enqueue(new Callback<Person>() {
             @Override
             public void onResponse(Call<Person> call, Response<Person> response) {
+                Log.i(TAG, "API onResponse() called");
                 List<Result> names = response.body().getResults();
                 for (Result name : names) {
-                    Log.i("TAG", "Name: " + name.getName());
+                    Log.i(TAG, "Name: " + name.getName());
                     fromApi.add(name);
                 }
             }
@@ -125,7 +126,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        Log.i("TAG", "getCount() returns " + resultList.size());
+        Log.i(TAG, "getCount() returns " + resultList.size());
         return resultList.size();
     }
 
@@ -140,9 +141,4 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-        Log.i("FOO", "Item count: " + resultList.size());
-    }
 }
