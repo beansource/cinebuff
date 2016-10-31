@@ -5,5 +5,4 @@ package com.carboni.cinebuff.interactors;
  */
 
 public interface Interactor {
-    boolean validateQuery(String query);
 }

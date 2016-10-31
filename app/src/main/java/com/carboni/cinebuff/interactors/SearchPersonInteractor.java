@@ -1,7 +1,6 @@
 package com.carboni.cinebuff.interactors;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.carboni.cinebuff.OnPersonInteractorFinishedListener;
 import com.carboni.cinebuff.model.Result;
@@ -38,17 +37,13 @@ public class SearchPersonInteractor implements Callback<List<Result>> {
 
     public void loadPerson(String query) {
         Retrofit call = initRestAdapter();
-        call.create(TMdbAPI.class).listPerson(query, this);
+        call.create(TMdbAPI.class).listPerson(query);
     }
 
     @Override
     public void onResponse(Call<List<Result>> call, Response<List<Result>> response) {
         Log.i("TAG", "Success");
-        try {
-            listener.onNetworkSuccess(call.execute().body(), response);
-        } catch (IOException e) {
-
-        }
+        listener.onNetworkSuccess(null, response);
     }
 
     @Override

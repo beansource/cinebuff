@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,28 +15,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
-import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
-import com.carboni.cinebuff.network.TMdbAPI;
-import com.carboni.cinebuff.presenter.MainPresenter;
-import com.carboni.cinebuff.view.MainView;
+import com.carboni.cinebuff.presenter.PersonPresenter;
+import com.carboni.cinebuff.view.PersonView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements PersonView {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
-
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.editTextPersonQuery)
@@ -43,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.personAutoComplete)
     DelayAutoCompleteTextView searchView;
 
-    MainPresenter presenter;
+    PersonPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        // Giving our MainPresenter a reference to the View
-        presenter = new MainPresenter(this);
+        // Giving our PersonPresenter a reference to the View
+        presenter = new PersonPresenter(this);
 
         setSupportActionBar(toolbar);
         fab.setVisibility(View.INVISIBLE);
@@ -95,42 +88,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
     void onFabClick() {
         String query = editTextQuery.getText().toString();
         presenter.attemptSearch(query);
-
-        /* TODO: Move API logic out of here
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        TMdbAPI tMdbAPI = retrofit.create(TMdbAPI.class);
-
-        Call<Person> call = tMdbAPI.searchPerson(editTextQuery.getText().toString());
-        call.enqueue(new Callback<Person>() {
-            @Override
-            public void onResponse(Call<Person> call, Response<Person> response) {
-                List<Result> people = response.body().getResults();
-                Toast.makeText(getApplicationContext(), "Number of results: " + people.size(), Toast.LENGTH_SHORT).show();
-                for (Result name : people) {
-                    Toast.makeText(getApplicationContext(), name.getName() + "\n" + name.getId(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Person> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
     }
 
     @Override
-    public void populatePeople() {
-        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+    public void showSuccess(List<Result> list, Response response) {
+        Log.i("MainActivity", "Success");
     }
 
     @Override
-    public void searchFailed() {
-        Toast.makeText(this, "Validation failed", Toast.LENGTH_SHORT).show();
+    public void showFailure() {
+        Log.i("MainActivity", "Failure");
     }
 
     @Override

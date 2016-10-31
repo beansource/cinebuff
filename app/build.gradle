@@ -30,13 +30,12 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
+    compile "com.android.support:recyclerview-v7:23.0.1"
     testCompile 'junit:junit:4.12'
 
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-
-    provided 'org.glassfish:javax.annotation:10.0-b28'
 
     // Dagger 2
     apt 'com.google.dagger:dagger-compiler:2.7'
@@ -49,5 +48,7 @@ dependencies {
 
     // RxJava
     compile 'io.reactivex:rxjava:1.2.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+
 
 }
