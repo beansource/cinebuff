@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.carboni.cinebuff.R;
 import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
-import com.carboni.cinebuff.network.PersonFetcher;
 import com.carboni.cinebuff.network.TMdbAPI;
 
 import java.util.ArrayList;
@@ -65,7 +64,6 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                 if (constraint != null) {
                     // resultList.clear();
                     Log.i(TAG, "performFiltering() with " + constraint.toString());
-                    PersonFetcher fetch = new PersonFetcher(constraint.toString());
                     resultList = getApi(constraint.toString());
                     filterResults.values = resultList;
                     filterResults.count = resultList.size();
