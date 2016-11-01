@@ -25,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements PersonView {
     @BindView(R.id.toolbar)
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements PersonView {
     void onFabClick() {
         String query = editTextQuery.getText().toString();
         presenter.attemptSearch(query);
+        Log.i("MainActivity", "Presenter called to attempt search");
     }
 
     @Override
@@ -96,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements PersonView {
     }
 
     @Override
-    public void showFailure() {
-        Log.i("MainActivity", "Failure");
+    public void showFailure(Throwable error) {
+        Log.i("MainActivity", "Failure from Presenter: " + error.getMessage().toString());
     }
 
     @Override
