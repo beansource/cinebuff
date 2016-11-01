@@ -5,6 +5,7 @@ import com.carboni.cinebuff.model.Result;
 import java.util.List;
 
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by ericcarboni on 10/24/16.
@@ -13,6 +14,6 @@ import retrofit2.Response;
 public interface PersonView {
     void showSuccess(List<Result> list, Response response);
 
-    void showFailure();
+    void showFailure(Throwable error);
 
 }
