@@ -24,27 +24,30 @@
         android:inputType="textPersonName|textCapWords" />
 
     <FrameLayout
-        android:layout_below="@+id/editTextPersonQuery"
+        android:id="@+id/autoCompleteView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextPersonQuery">
 
         <com.carboni.cinebuff.DelayAutoCompleteTextView
-            android:hint="@string/search_hint"
             android:id="@+id/personAutoComplete"
             android:layout_width="match_parent"
-            android:paddingRight="8dp"
             android:layout_height="wrap_content"
+            android:hint="@string/search_hint"
             android:imeOptions="flagNoExtractUi|actionSearch"
-            android:inputType="textPersonName|textCapWords" />
+            android:inputType="textPersonName|textCapWords"
+            android:paddingRight="8dp" />
 
         <ProgressBar
             android:id="@+id/loading_indicator"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_marginRight="8dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="8dp"
             android:visibility="gone" />
 
     </FrameLayout>
+
+
 </RelativeLayout>
