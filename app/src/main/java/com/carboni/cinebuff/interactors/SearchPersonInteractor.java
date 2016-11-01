@@ -3,6 +3,7 @@ package com.carboni.cinebuff.interactors;
 import android.util.Log;
 
 import com.carboni.cinebuff.OnPersonInteractorFinishedListener;
+import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
 import com.carboni.cinebuff.network.TMdbAPI;
 
@@ -24,10 +25,12 @@ public class SearchPersonInteractor implements Callback<List<Result>> {
 
     public SearchPersonInteractor(OnPersonInteractorFinishedListener listener) {
         this.listener = listener;
+        Log.i("SearchPersonInteractor", "Interactor constructor called");
     }
 
     // TODO: Inject this using Dagger or other form
     private Retrofit initRestAdapter() {
+        Log.i("SearchPersonInteractor", "Initializing Rest");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.themoviedb.org/3/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -36,20 +39,23 @@ public class SearchPersonInteractor implements Callback<List<Result>> {
     }
 
     public void loadPerson(String query) {
-        Retrofit call = initRestAdapter();
-        call.create(TMdbAPI.class).listPerson(query);
+        Retrofit rest = initRestAdapter();
+        //rest.create(TMdbAPI.class).searchPerson(query);
+        Call<List<Result>> call = rest.create(TMdbAPI.class).listPerson(query);
+        call.enqueue(this);
+        Log.i("SearchPersonInteractor", "Retrofit calling API class");
     }
 
     @Override
     public void onResponse(Call<List<Result>> call, Response<List<Result>> response) {
-        Log.i("TAG", "Success");
+        Log.i("SearchPersonInteractor", "Success from OnSearchInteractorFinishedListener");
         listener.onNetworkSuccess(null, response);
     }
 
     @Override
     public void onFailure(Call<List<Result>> call, Throwable t) {
-        Log.i("TAG", "Failure");
-        listener.onNetworkFailure();
+        Log.i("SearchPersonInteractor ", "Failure from OnSearchInteractorFinishedListener");
+        listener.onNetworkFailure(t);
     }
 
 
