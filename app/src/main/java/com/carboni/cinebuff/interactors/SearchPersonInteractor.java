@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by ericcarboni on 10/25/16.
  */
 
-public class SearchPersonInteractor implements Callback<List<Result>> {
+public class SearchPersonInteractor implements Callback<Result> {
     private OnPersonInteractorFinishedListener listener;
 
     public SearchPersonInteractor(OnPersonInteractorFinishedListener listener) {
@@ -40,23 +40,21 @@ public class SearchPersonInteractor implements Callback<List<Result>> {
 
     public void loadPerson(String query) {
         Retrofit rest = initRestAdapter();
-        //rest.create(TMdbAPI.class).searchPerson(query);
-        Call<List<Result>> call = rest.create(TMdbAPI.class).listPerson(query);
+        Call<Result> call = rest.create(TMdbAPI.class).listPerson(query);
         call.enqueue(this);
         Log.i("SearchPersonInteractor", "Retrofit calling API class");
     }
 
     @Override
-    public void onResponse(Call<List<Result>> call, Response<List<Result>> response) {
+    public void onResponse(Call<Result> call, Response<Result> response) {
         Log.i("SearchPersonInteractor", "Success from OnSearchInteractorFinishedListener");
-        listener.onNetworkSuccess(null, response);
+        listener.onNetworkSuccess(call, response);
     }
 
     @Override
-    public void onFailure(Call<List<Result>> call, Throwable t) {
+    public void onFailure(Call<Result> call, Throwable t) {
         Log.i("SearchPersonInteractor ", "Failure from OnSearchInteractorFinishedListener");
         listener.onNetworkFailure(t);
     }
-
 
 }

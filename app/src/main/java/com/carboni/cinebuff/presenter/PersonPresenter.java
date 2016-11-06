@@ -9,6 +9,7 @@ import com.carboni.cinebuff.view.PersonView;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -33,7 +34,7 @@ public class PersonPresenter implements Presenter, OnPersonInteractorFinishedLis
     }
 
     @Override
-    public void onNetworkSuccess(List<Result> list, Response response) {
+    public void onNetworkSuccess(Call<Result> list, Response response) {
         Log.i("PersonPresenter", "PersonPresenter got success from Interactor");
         view.showSuccess(list, response);
     }

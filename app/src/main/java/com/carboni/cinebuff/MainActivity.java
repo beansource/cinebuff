@@ -24,6 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements PersonView {
     }
 
     @Override
-    public void showSuccess(List<Result> list, Response response) {
+    public void showSuccess(Call<Result> list, Response response) {
         Log.i("MainActivity", "Success");
     }
 

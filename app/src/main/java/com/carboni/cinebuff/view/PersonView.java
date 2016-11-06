@@ -4,6 +4,7 @@ import com.carboni.cinebuff.model.Result;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -12,7 +13,7 @@ import retrofit2.Retrofit;
  */
 
 public interface PersonView {
-    void showSuccess(List<Result> list, Response response);
+    void showSuccess(Call<Result> list, Response response);
 
     void showFailure(Throwable error);
 

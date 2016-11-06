@@ -4,6 +4,7 @@ import com.carboni.cinebuff.model.Result;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -12,7 +13,7 @@ import retrofit2.Retrofit;
  */
 
 public interface OnPersonInteractorFinishedListener {
-    void onNetworkSuccess(List<Result> list, Response response);
+    void onNetworkSuccess(Call<Result> list, Response response);
 
     void onNetworkFailure(Throwable error);
 }
