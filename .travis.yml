@@ -8,6 +8,7 @@ android:
 
 notifications:
   email: false
+  slack: cinebuff:8XllnTACl1gXpIUfPGMLr4qL
 
 before_install:
 
