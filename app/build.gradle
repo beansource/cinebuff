@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 23
@@ -50,18 +51,10 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 
-    // Dagger 2
-    apt 'com.google.dagger:dagger-compiler:2.7'
-    compile 'com.google.dagger:dagger:2.7'
     provided 'javax.annotation:jsr250-api:1.0'
 
     // Butterknife
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-
-    // RxJava
-    compile 'io.reactivex:rxjava:1.2.1'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-
-
+    
 }
