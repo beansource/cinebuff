@@ -1,4 +1,9 @@
 language: android
+jdk: oraclejdk8
+env:
+  global:
+    - ANDROID_TARGET=android-21
+    - ANDROID_ABI=armeabi-v7a
 android:
   components:
     - platform-tools
@@ -24,6 +29,4 @@ before_install:
 script: ./gradlew check
 
 after_success:
-  - ./gradlew jacocoFullReport
-  - pip install --user codecov
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
