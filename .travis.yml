@@ -22,3 +22,8 @@ before_install:
 # Let's try to build...
 #install: ./gradlew clean build
 script: ./gradlew check
+
+after_success:
+  - ./gradlew jacocoFullReport
+  - pip install --user codecov
+  - codecov
