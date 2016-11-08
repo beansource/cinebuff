@@ -35,8 +35,8 @@ before_install:
 # Let's try to build...
 #install: ./gradlew clean build
 script:
+  - ./gradlew check
   — ./gradlew build jacocoTestReport
-
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
