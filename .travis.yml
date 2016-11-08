@@ -33,7 +33,7 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 script:
-  — ./gradlew build jacocoTestReport
-  - ./gradlew check
+ # — ./gradlew build jacocoTestReport
+  - ./gradlew connectedCheck
 after_success:
   - bash <(curl -s https://codecov.io/bash)
