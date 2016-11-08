@@ -18,25 +18,22 @@ android:
     - android-sdk-license-c81a61d9
     - android-sdk-license-.+
     - google-gdk-license-.+
-
 notifications:
   email: false
   slack: cinebuff:8XllnTACl1gXpIUfPGMLr4qL
-
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 before_install:
-
-  # for gradle output style
-  - export TERM=dumb
-
   # environment info
   - ./gradlew -v
   - uname -a
-
-# Let's try to build...
-#install: ./gradlew clean build
+  - chmod +x gradlew
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 script:
   — ./gradlew build jacocoTestReport
   - ./gradlew check
-
 after_success:
   - bash <(curl -s https://codecov.io/bash)
