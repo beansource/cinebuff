@@ -21,6 +21,9 @@ android:
 notifications:
   email: false
   slack: cinebuff:8XllnTACl1gXpIUfPGMLr4qL
+branches:
+  only:
+  - master
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 before_install:
