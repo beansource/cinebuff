@@ -1,9 +1,6 @@
 package com.carboni.cinebuff.network;
 
 import com.carboni.cinebuff.model.Person;
-import com.carboni.cinebuff.model.Result;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,9 +15,6 @@ public interface TMdbAPI {
 
     @GET("search/person?api_key=" + API_KEY)
     Call<Person> searchPerson(@Query("query") String query);
-
-    @GET("search/person?api_key=" + API_KEY)
-    Call<Result> listPerson(@Query("query") String query);
 
     @GET("discover/movie?api_key=" + API_KEY)
     Call getMovies(@Query("with_people") String query);
