@@ -1,19 +1,16 @@
 package com.carboni.cinebuff;
 
-import com.carboni.cinebuff.model.Result;
-
-import java.util.List;
+import com.carboni.cinebuff.model.Person;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by ericcarboni on 10/26/16.
  */
 
 public interface OnPersonInteractorFinishedListener {
-    void onNetworkSuccess(Call<Result> list, Response response);
+    void onNetworkSuccess(Call<Person> list, Response<Person> response);
 
     void onNetworkFailure(Throwable error);
 }

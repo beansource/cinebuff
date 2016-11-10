@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
+import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
 import com.carboni.cinebuff.presenter.PersonPresenter;
 import com.carboni.cinebuff.view.PersonView;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements PersonView {
     }
 
     @Override
-    public void showSuccess(Call<Result> list, Response response) {
+    public void showSuccess(Call<Person> list, Response<Person> response) {
         Log.i("MainActivity", "Success");
     }
 

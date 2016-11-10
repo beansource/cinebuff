@@ -7,7 +7,6 @@ import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
 import com.carboni.cinebuff.network.TMdbAPI;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -20,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by ericcarboni on 10/25/16.
  */
 
-public class SearchPersonInteractor implements Callback<Result> {
+public class SearchPersonInteractor implements Callback<Person> {
     private OnPersonInteractorFinishedListener listener;
 
     public SearchPersonInteractor(OnPersonInteractorFinishedListener listener) {
@@ -40,19 +39,23 @@ public class SearchPersonInteractor implements Callback<Result> {
 
     public void loadPerson(String query) {
         Retrofit rest = initRestAdapter();
-        Call<Result> call = rest.create(TMdbAPI.class).listPerson(query);
+        Call<Person> call = rest.create(TMdbAPI.class).searchPerson(query);
         call.enqueue(this);
         Log.i("SearchPersonInteractor", "Retrofit calling API class");
     }
 
     @Override
-    public void onResponse(Call<Result> call, Response<Result> response) {
+    public void onResponse(Call<Person> call, Response<Person> response) {
         Log.i("SearchPersonInteractor", "Success from OnSearchInteractorFinishedListener");
+        List<Result> list = response.body().getResults();
+        for (Result name : list) {
+            Log.i("SPAM", name.getName());
+        }
         listener.onNetworkSuccess(call, response);
     }
 
     @Override
-    public void onFailure(Call<Result> call, Throwable t) {
+    public void onFailure(Call<Person> call, Throwable t) {
         Log.i("SearchPersonInteractor ", "Failure from OnSearchInteractorFinishedListener");
         listener.onNetworkFailure(t);
     }

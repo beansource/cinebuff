@@ -4,14 +4,11 @@ import android.util.Log;
 
 import com.carboni.cinebuff.OnPersonInteractorFinishedListener;
 import com.carboni.cinebuff.interactors.SearchPersonInteractor;
-import com.carboni.cinebuff.model.Result;
+import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.view.PersonView;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by ericcarboni on 10/24/16.
@@ -34,7 +31,7 @@ public class PersonPresenter implements Presenter, OnPersonInteractorFinishedLis
     }
 
     @Override
-    public void onNetworkSuccess(Call<Result> list, Response response) {
+    public void onNetworkSuccess(Call<Person> list, Response<Person> response) {
         Log.i("PersonPresenter", "PersonPresenter got success from Interactor");
         view.showSuccess(list, response);
     }
