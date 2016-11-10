@@ -42,4 +42,7 @@ dependencies {
     // Butterknife
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    // Chips edit text
+    compile 'com.klinkerapps:android-chips:1.1.1@aar'
 }
