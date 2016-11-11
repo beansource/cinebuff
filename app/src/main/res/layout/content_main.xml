@@ -13,21 +13,11 @@
     tools:context="com.carboni.cinebuff.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <EditText
-        android:id="@+id/editTextPersonQuery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="@string/search_hint"
-        android:inputType="textPersonName|textCapWords" />
-
     <FrameLayout
         android:id="@+id/autoCompleteView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextPersonQuery">
+        android:layout_alignParentStart="true">
 
         <com.carboni.cinebuff.DelayAutoCompleteTextView
             android:id="@+id/personAutoComplete"
