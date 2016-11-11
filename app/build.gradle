@@ -18,6 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField('String', 'TMDB_API_KEY', TMDB_API_KEY)
+    }
     dataBinding {
         enabled = true
     }
@@ -44,5 +47,5 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
     // Chips edit text
-    compile 'com.klinkerapps:android-chips:1.1.1@aar'
+
 }

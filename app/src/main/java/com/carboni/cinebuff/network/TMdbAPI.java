@@ -1,5 +1,6 @@
 package com.carboni.cinebuff.network;
 
+import com.carboni.cinebuff.BuildConfig;
 import com.carboni.cinebuff.model.Person;
 
 import retrofit2.Call;
@@ -11,7 +12,7 @@ import retrofit2.http.Query;
  */
 
 public interface TMdbAPI {
-    String API_KEY = "4dd1ed8cbc9fe2a51c02805bddc7d390";
+    String API_KEY = BuildConfig.TMDB_API_KEY;
 
     @GET("search/person?api_key=" + API_KEY)
     Call<Person> searchPerson(@Query("query") String query);
