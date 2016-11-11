@@ -9,47 +9,60 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.carboni.cinebuff.CircleTransformation;
 import com.carboni.cinebuff.R;
 import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
-import com.carboni.cinebuff.network.TMdbAPI;
+import com.carboni.cinebuff.presenter.PersonPresenter;
+import com.carboni.cinebuff.view.PersonView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by ericcarboni on 10/16/16.
  */
 
-public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
+public class AutoCompleteAdapter extends BaseAdapter implements Filterable, PersonView {
     private static final String TAG = "AutoCompleteAdapter";
 
     private List<Result> list;
     private Context context;
+    PersonPresenter presenter;
 
-    public AutoCompleteAdapter(Context context, List<Result> list) {
+    public AutoCompleteAdapter(Context context) {
         Log.i(TAG, "Constructor called");
         this.context = context;
-        this.list = list;
+        this.presenter = new PersonPresenter(this);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.i(TAG, "getView() called");
+        final ImageView personImage;
+        String baseImageUrl = "https://image.tmdb.org/t/p/w500";
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.auto_complete_item, parent, false);
+            personImage = (ImageView) convertView.findViewById(R.id.autoCompleteImage);
+        } else {
+            personImage = (ImageView) convertView.findViewById(R.id.autoCompleteImage);
         }
         Result person = (Result) getItem(position);
-        ((TextView) convertView.findViewById(R.id.autoCompleteName)).setText(getItem(position).getName());
+        ((TextView) convertView.findViewById(R.id.autoCompleteName)).setText(person.getName() + " " + person.getId());
+        Glide
+                .with(context)
+                .load(baseImageUrl + person.getProfilePath())
+                .placeholder(R.mipmap.ic_person_placeholder)
+                .transform(new CircleTransformation(context))
+                .into(personImage);
+        Log.i(TAG, "profile path: " + person.getProfilePath());
         return convertView;
     }
 
@@ -62,8 +75,10 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     Log.i(TAG, "performFiltering() with " + constraint.toString());
-                    notifyDataSetChanged();
+                    presenter.attemptSearch(constraint.toString());
                 }
+                filterResults.count = getCount();
+                filterResults.values = list;
                 return filterResults;
             }
 
@@ -98,4 +113,14 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         return list.get(position).getId();
     }
 
+    @Override
+    public void showSuccess(Call<Person> list, Response<Person> response) {
+        this.list = response.body().getResults();
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void showFailure(Throwable error) {
+
+    }
 }
