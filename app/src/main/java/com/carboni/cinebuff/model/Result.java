@@ -11,7 +11,7 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class Result {
 
-    private String profilePath;
+    private String profile_path;
     private Boolean adult;
     private Integer id;
     private List<KnownFor> knownFor = new ArrayList<KnownFor>();
@@ -23,7 +23,7 @@ public class Result {
      * @return The profilePath
      */
     public String getProfilePath() {
-        return profilePath;
+        return profile_path;
     }
 
     /**
