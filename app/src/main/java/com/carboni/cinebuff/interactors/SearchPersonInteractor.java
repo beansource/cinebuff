@@ -47,9 +47,9 @@ public class SearchPersonInteractor implements Callback<Person> {
     @Override
     public void onResponse(Call<Person> call, Response<Person> response) {
         Log.i("SearchPersonInteractor", "Success from OnSearchInteractorFinishedListener");
-        List<Result> list = response.body().getResults();
-        for (Result name : list) {
-            Log.i("SPAM", name.getName());
+        List<Result> people = response.body().getResults();
+        for (Result person : people) {
+            Log.i("SPAM", person.getId() + " " + person.getName());
         }
         listener.onNetworkSuccess(call, response);
     }

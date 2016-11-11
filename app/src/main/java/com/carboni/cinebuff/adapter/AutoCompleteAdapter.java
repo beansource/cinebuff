@@ -31,26 +31,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = "AutoCompleteAdapter";
-    public static List<Result> resultList;
-    public static List<Result> fromApi;
-    private Context mContext;
 
-    public AutoCompleteAdapter(Context context) {
+    private List<Result> list;
+    private Context context;
+
+    public AutoCompleteAdapter(Context context, List<Result> list) {
         Log.i(TAG, "Constructor called");
-        mContext = context;
-        resultList = new ArrayList<Result>();
-        fromApi = new ArrayList<Result>();
+        this.context = context;
+        this.list = list;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.i(TAG, "getView() called");
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.auto_complete_item, parent, false);
         }
+        Result person = (Result) getItem(position);
         ((TextView) convertView.findViewById(R.id.autoCompleteName)).setText(getItem(position).getName());
-        // ((TextView) convertView.findViewById(R.id.autoCompleteId)).setText(getItem(position).getId());
         return convertView;
     }
 
@@ -62,11 +61,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                 Log.i(TAG, "performFiltering() called");
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
-                    // resultList.clear();
                     Log.i(TAG, "performFiltering() with " + constraint.toString());
-                    resultList = getApi(constraint.toString());
-                    filterResults.values = resultList;
-                    filterResults.count = resultList.size();
                     notifyDataSetChanged();
                 }
                 return filterResults;
@@ -76,14 +71,6 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 Log.i(TAG, "publishResults() called");
                 if (results != null && results.count > 0) {
-                    // resultList.clear();
-
-                    /*resultList = (List<Result>) results.values;
-                    for (Result name : resultList) {
-                        resultList.add(name);
-                        Log.i("publishResults()", name.getName());
-                    }*/
-
                     notifyDataSetChanged();
                 } else {
                     Log.i(TAG, "Results null or count < 0");
@@ -94,49 +81,21 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         return filter;
     }
 
-    public List<Result> getApi(String constraint) {
-        Log.i(TAG, "API called");
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        TMdbAPI tMdbAPI = retrofit.create(TMdbAPI.class);
-        Call<Person> call = tMdbAPI.searchPerson(constraint.toString());
-        call.enqueue(new Callback<Person>() {
-            @Override
-            public void onResponse(Call<Person> call, Response<Person> response) {
-                Log.i(TAG, "API onResponse() called");
-                List<Result> names = response.body().getResults();
-                for (Result name : names) {
-                    Log.i(TAG, "Name: " + name.getName());
-                    fromApi.add(name);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Person> call, Throwable t) {
-
-            }
-        });
-        return fromApi;
-    }
-
     @Override
     public int getCount() {
-        Log.i(TAG, "getCount() returns " + resultList.size());
-        return resultList.size();
+        Log.i(TAG, "getCount() returns " + list.size());
+        return list.size();
     }
 
     @Nullable
     @Override
     public Result getItem(int position) {
-        return resultList.get(position);
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return list.get(position).getId();
     }
 
 }

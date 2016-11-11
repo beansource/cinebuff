@@ -49,12 +49,4 @@
 
     </FrameLayout>
 
-    <com.android.ex.chips.RecipientEditTextView
-        android:id="@+id/chips_edittext"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="@string/search_hint"
-        android:minHeight="58dp" />
-    
 </RelativeLayout>

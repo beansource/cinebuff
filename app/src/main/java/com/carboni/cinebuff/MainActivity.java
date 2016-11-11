@@ -20,14 +20,11 @@ import com.carboni.cinebuff.model.Result;
 import com.carboni.cinebuff.presenter.PersonPresenter;
 import com.carboni.cinebuff.view.PersonView;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements PersonView {
     @BindView(R.id.toolbar)
@@ -51,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements PersonView {
         presenter = new PersonPresenter(this);
 
         setSupportActionBar(toolbar);
+
         fab.setVisibility(View.INVISIBLE);
         editTextQuery.addTextChangedListener(new TextWatcher() {
             @Override
