@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 
@@ -55,5 +57,19 @@ public class DelayAutoCompleteTextView extends AutoCompleteTextView {
             mLoadingIndicator.setVisibility(View.GONE);
         }
         super.onFilterComplete(count);
+    }
+
+    /*
+    Override method in order to handle back button hiding results instead of hiding keyboard
+     */
+    @Override
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && isPopupShowing()) {
+            InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputManager.hideSoftInputFromWindow(findFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)) {
+                return true;
+            }
+        }
+        return super.onKeyPreIme(keyCode, event);
     }
 }
