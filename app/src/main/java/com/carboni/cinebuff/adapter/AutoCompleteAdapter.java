@@ -54,7 +54,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable, Pers
         } else {
             personImage = (ImageView) convertView.findViewById(R.id.autoCompleteImage);
         }
-        Result person = (Result) getItem(position);
+        Result person = getItem(position);
         ((TextView) convertView.findViewById(R.id.autoCompleteName)).setText(person.getName() + " " + person.getId());
         Glide
                 .with(context)
