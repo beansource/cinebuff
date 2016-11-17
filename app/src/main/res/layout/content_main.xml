@@ -12,47 +12,21 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.carboni.cinebuff.MainActivity"
     tools:showIn="@layout/activity_main">
-
-    <FrameLayout
-        android:id="@+id/autoCompleteView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true">
-
-        <com.carboni.cinebuff.DelayAutoCompleteTextView
-            android:id="@+id/personAutoComplete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_hint"
-            android:imeOptions="flagNoExtractUi|actionSearch"
-            android:inputType="textPersonName|textCapWords"
-            android:paddingRight="8dp" />
-
-        <ProgressBar
-            android:id="@+id/loading_indicator"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="8dp"
-            android:visibility="gone" />
-
-    </FrameLayout>
-
+    
     <com.hootsuite.nachos.NachoTextView
-        android:inputType="textPersonName|textCapWords"
-        android:hint="@string/search_hint"
         android:id="@+id/nacho_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/autoCompleteView" />
+        android:layout_alignParentStart="true"
+        android:hint="@string/search_hint"
+        android:inputType="textPersonName|textCapWords" />
 
     <Button
-        android:text="@string/search_button"
+        android:id="@+id/searchMoviesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nacho_text_view"
         android:layout_alignParentEnd="true"
-        android:id="@+id/searchMoviesButton" />
+        android:layout_below="@+id/nacho_text_view"
+        android:text="@string/search_button" />
 
 </RelativeLayout>
