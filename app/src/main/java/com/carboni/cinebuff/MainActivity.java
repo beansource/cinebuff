@@ -1,24 +1,36 @@
 package com.carboni.cinebuff;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
 import com.carboni.cinebuff.model.Result;
+import com.hootsuite.nachos.ChipConfiguration;
+import com.hootsuite.nachos.NachoTextView;
+import com.hootsuite.nachos.chip.Chip;
+import com.hootsuite.nachos.chip.ChipSpan;
+import com.hootsuite.nachos.chip.ChipSpanChipCreator;
+import com.hootsuite.nachos.tokenizer.SpanChipTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.personAutoComplete)
-    DelayAutoCompleteTextView searchView;
+    @BindView(R.id.nacho_text_view)
+    NachoTextView nachoView;
+    @BindView(R.id.searchMoviesButton)
+    Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +40,36 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        searchView.setThreshold(3); // min number of characters before dropdown is shown
-        searchView.setAdapter(new AutoCompleteAdapter(this));
-        searchView.setLoadingIndicator((android.widget.ProgressBar) findViewById(R.id.loading_indicator));
-        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Bind auto complete adapter to Nacho chip edit text view
+        nachoView.setAdapter(new AutoCompleteAdapter(this));
+
+        // Want to make sure we get our chip set up with the Person name and image
+        nachoView.setChipTokenizer(new SpanChipTokenizer<>(this, new ChipSpanChipCreator() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Result result = (Result) parent.getItemAtPosition(position);
+            public ChipSpan createChip(@NonNull Context context, @NonNull CharSequence text, Object data) {
+                Result person = (Result) data;
+                return new ChipSpan(context, person.getName(), ContextCompat.getDrawable(MainActivity.this, R.mipmap.ic_person_white_36dp), data);
             }
-        });
+
+            @Override
+            public void configureChip(@NonNull ChipSpan chip, @NonNull ChipConfiguration chipConfiguration) {
+                super.configureChip(chip, chipConfiguration);
+                chip.setShowIconOnLeft(true);
+            }
+        }, ChipSpan.class));
+
+    }
+
+    @OnClick(R.id.searchMoviesButton)
+    public void search() {
+        String names = "People to search: ";
+        String ids = "People ids to be used in query: ";
+        for (Chip chip : nachoView.getAllChips()) {
+            Result person = (Result) chip.getData();
+            names += person.getName() + ", ";
+            ids += person.getId() + ", ";
+        }
+        Toast.makeText(this, names + "\n" + ids, Toast.LENGTH_LONG).show();
     }
 
     @Override

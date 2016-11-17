@@ -5,4 +5,5 @@
 
     <!-- -->
     <string name="search_hint">Search for a person...</string>
+    <string name="search_button">Search</string>
 </resources>

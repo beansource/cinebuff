@@ -39,4 +39,20 @@
 
     </FrameLayout>
 
+    <com.hootsuite.nachos.NachoTextView
+        android:inputType="textPersonName|textCapWords"
+        android:hint="@string/search_hint"
+        android:id="@+id/nacho_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/autoCompleteView" />
+
+    <Button
+        android:text="@string/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nacho_text_view"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/searchMoviesButton" />
+
 </RelativeLayout>
