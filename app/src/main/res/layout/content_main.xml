@@ -12,14 +12,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.carboni.cinebuff.MainActivity"
     tools:showIn="@layout/activity_main">
-    
+
     <com.hootsuite.nachos.NachoTextView
         android:id="@+id/nacho_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:hint="@string/search_hint"
-        android:inputType="textPersonName|textCapWords" />
+        android:inputType="textPersonName|textCapWords|textMultiLine"
+        android:maxLines="2" />
 
     <Button
         android:id="@+id/searchMoviesButton"
