@@ -3,16 +3,18 @@ package com.carboni.cinebuff;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
 import com.carboni.cinebuff.model.Result;
+import com.carboni.cinebuff.presenter.MoviePresenter;
 import com.hootsuite.nachos.ChipConfiguration;
 import com.hootsuite.nachos.NachoTextView;
 import com.hootsuite.nachos.chip.Chip;
@@ -29,8 +31,10 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.nacho_text_view)
     NachoTextView nachoView;
-    @BindView(R.id.searchMoviesButton)
-    Button searchButton;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
+    MoviePresenter moviePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +64,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.searchMoviesButton)
+    @OnClick(R.id.fab)
     public void search() {
-        String names = "People to search: ";
-        String ids = "People ids to be used in query: ";
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+        String ids = "";
         for (Chip chip : nachoView.getAllChips()) {
             Result person = (Result) chip.getData();
-            names += person.getName() + ", ";
-            ids += person.getId() + ", ";
+            ids += person.getId() + ",";
         }
-        Toast.makeText(this, names + "\n" + ids, Toast.LENGTH_LONG).show();
+        String query = ids.substring(0, ids.length() - 1); // remove last comma
+        Toast.makeText(this, query, Toast.LENGTH_LONG).show();
     }
 
     @Override
