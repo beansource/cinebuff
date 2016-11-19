@@ -1,6 +1,7 @@
 package com.carboni.cinebuff.network;
 
 import com.carboni.cinebuff.BuildConfig;
+import com.carboni.cinebuff.model.Movies;
 import com.carboni.cinebuff.model.Person;
 
 import retrofit2.Call;
@@ -24,6 +25,6 @@ public interface TMdbAPI {
     Retrieve list of Movies
      */
     @GET("discover/movie?api_key=" + API_KEY)
-    Call getMovies(@Query("with_people") String query);
+    Call<Movies> getMovies(@Query("with_people") String query);
 
 }
