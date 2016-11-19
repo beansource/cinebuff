@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
-    MoviePresenter moviePresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
             Result person = (Result) chip.getData();
             ids += person.getId() + ",";
         }
-        String query = ids.substring(0, ids.length() - 1); // remove last comma
-        Toast.makeText(this, query, Toast.LENGTH_LONG).show();
+        if (ids.length() > 0) {
+            String query = ids.substring(0, ids.length() - 1); // remove last comma
+            Toast.makeText(this, query, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
