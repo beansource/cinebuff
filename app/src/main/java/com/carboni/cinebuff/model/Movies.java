@@ -11,7 +11,7 @@ import javax.annotation.Generated;
 public class Movies {
 
     private Integer page;
-    private List<Result> results = new ArrayList<Result>();
+    private List<ResultMovies> results = new ArrayList<ResultMovies>();
     private Integer totalResults;
     private Integer totalPages;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -26,7 +26,7 @@ public class Movies {
     /**
      * @return The results
      */
-    public List<Result> getResults() {
+    public List<ResultMovies> getResults() {
         return results;
     }
 
