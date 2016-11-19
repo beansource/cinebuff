@@ -13,8 +13,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
+import com.carboni.cinebuff.model.Movies;
 import com.carboni.cinebuff.model.Result;
+import com.carboni.cinebuff.model.ResultMovies;
 import com.carboni.cinebuff.presenter.MoviePresenter;
+import com.carboni.cinebuff.view.MoviesView;
 import com.hootsuite.nachos.ChipConfiguration;
 import com.hootsuite.nachos.NachoTextView;
 import com.hootsuite.nachos.chip.Chip;
@@ -22,11 +25,16 @@ import com.hootsuite.nachos.chip.ChipSpan;
 import com.hootsuite.nachos.chip.ChipSpanChipCreator;
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviesView {
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.nacho_text_view)
@@ -34,11 +42,15 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+    MoviePresenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        presenter = new MoviePresenter(this);
 
         setSupportActionBar(toolbar);
 
@@ -74,8 +86,23 @@ public class MainActivity extends AppCompatActivity {
         }
         if (ids.length() > 0) {
             String query = ids.substring(0, ids.length() - 1); // remove last comma
-            Toast.makeText(this, query, Toast.LENGTH_LONG).show();
         }
+        presenter.attemptSearch(ids);
+    }
+
+    @Override
+    public void showSuccess(Call<Movies> list, Response<Movies> response) {
+        List<ResultMovies> movies = response.body().getResults();
+        String output = "";
+        for (ResultMovies movie : movies) {
+            output += movie.getTitle() + "\n";
+        }
+        Toast.makeText(this, output.substring(0, output.length() - 1), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showFailure(Throwable error) {
+
     }
 
     @Override
