@@ -1,7 +1,9 @@
-# cinebuff
-Cinebuff for Android
+# Cinebuff
+App for Android
 
 _An app for movie buffs, created by movie buffs_
+
+Built using [The Movie DB](https://www.themoviedb.org/)
 
 [![Build Status](https://travis-ci.com/ericcarboni/cinebuff.svg?token=61Ym8kNCNCjeXiMsgThk&branch=dev)](https://travis-ci.com/ericcarboni/cinebuff)
 
