@@ -10,7 +10,7 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class ResultMovies {
 
-    private String posterPath;
+    private String poster_path;
     private Boolean adult;
     private String overview;
     private String releaseDate;
@@ -30,7 +30,7 @@ public class ResultMovies {
      * @return The posterPath
      */
     public String getPosterPath() {
-        return posterPath;
+        return poster_path;
     }
 
     /**
