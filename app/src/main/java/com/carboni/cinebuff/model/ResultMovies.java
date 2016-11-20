@@ -13,7 +13,7 @@ public class ResultMovies {
     private String poster_path;
     private Boolean adult;
     private String overview;
-    private String releaseDate;
+    private String release_date;
     private List<Integer> genreIds = new ArrayList<Integer>();
     private Integer id;
     private String originalTitle;
@@ -51,7 +51,7 @@ public class ResultMovies {
      * @return The releaseDate
      */
     public String getReleaseDate() {
-        return releaseDate;
+        return release_date;
     }
 
     /**
