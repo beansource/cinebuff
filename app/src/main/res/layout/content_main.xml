@@ -22,4 +22,13 @@
         android:imeOptions="actionSearch"
         android:inputType="textPersonName|textCapWords" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/movie_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nacho_text_view"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:visibility="gone" />
+
 </RelativeLayout>
