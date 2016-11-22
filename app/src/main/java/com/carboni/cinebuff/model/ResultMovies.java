@@ -19,11 +19,11 @@ public class ResultMovies {
     private String originalTitle;
     private String originalLanguage;
     private String title;
-    private String backdropPath;
+    private String backdrop_path;
     private Double popularity;
     private Integer voteCount;
     private Boolean video;
-    private Double voteAverage;
+    private Double vote_average;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -93,7 +93,7 @@ public class ResultMovies {
      * @return The backdropPath
      */
     public String getBackdropPath() {
-        return backdropPath;
+        return backdrop_path;
     }
 
     /**
@@ -121,7 +121,7 @@ public class ResultMovies {
      * @return The voteAverage
      */
     public Double getVoteAverage() {
-        return voteAverage;
+        return vote_average;
     }
 
     public Map<String, Object> getAdditionalProperties() {
