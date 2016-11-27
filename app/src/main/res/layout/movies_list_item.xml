@@ -18,7 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/material_flat"
+            android:transitionName="movie_image" />
 
         <LinearLayout
             android:layout_width="match_parent"
