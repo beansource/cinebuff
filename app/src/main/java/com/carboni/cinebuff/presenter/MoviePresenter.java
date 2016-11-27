@@ -1,6 +1,6 @@
 package com.carboni.cinebuff.presenter;
 
-import com.carboni.cinebuff.OnMovieInteractorFinishedListener;
+import com.carboni.cinebuff.listeners.OnMovieInteractorFinishedListener;
 import com.carboni.cinebuff.interactors.SearchMoviesInteractor;
 import com.carboni.cinebuff.model.Movies;
 import com.carboni.cinebuff.view.MoviesView;

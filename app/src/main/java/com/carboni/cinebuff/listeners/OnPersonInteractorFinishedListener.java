@@ -1,4 +1,4 @@
-package com.carboni.cinebuff;
+package com.carboni.cinebuff.listeners;
 
 import com.carboni.cinebuff.model.Person;
 

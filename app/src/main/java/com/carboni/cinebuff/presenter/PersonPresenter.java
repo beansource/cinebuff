@@ -2,7 +2,7 @@ package com.carboni.cinebuff.presenter;
 
 import android.util.Log;
 
-import com.carboni.cinebuff.OnPersonInteractorFinishedListener;
+import com.carboni.cinebuff.listeners.OnPersonInteractorFinishedListener;
 import com.carboni.cinebuff.interactors.SearchPersonInteractor;
 import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.view.PersonView;
