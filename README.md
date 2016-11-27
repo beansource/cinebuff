@@ -1,4 +1,4 @@
-# cinebuff
+# Cinebuff
 Cinebuff for Android
 
 _An app for movie buffs, created by movie buffs_
@@ -12,3 +12,5 @@ _An app for movie buffs, created by movie buffs_
 * [Glide](https://github.com/bumptech/glide)
 * [Butterknife](http://jakewharton.github.io/butterknife/)
 * [Nachos](https://github.com/hootsuite/nachos)
+
+![Built by TMdB](/images/tmdb_logo.png)
