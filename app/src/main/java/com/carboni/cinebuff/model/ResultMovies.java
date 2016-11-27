@@ -51,7 +51,11 @@ public class ResultMovies {
      * @return The releaseDate
      */
     public String getReleaseDate() {
-        return release_date;
+        if (release_date.length() > 4) {
+            return release_date.substring(0, 4);
+        } else {
+            return release_date;
+        }
     }
 
     /**
