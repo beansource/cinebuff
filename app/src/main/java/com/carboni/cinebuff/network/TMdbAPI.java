@@ -33,6 +33,6 @@ public interface TMdbAPI {
     Retrieve details about a Movie
      */
     @GET("movie/{movie_id}" + "?" + API_KEY)
-    Call<MovieDetail> getMovieDetail(@Path("movie_id") String movie_id);
+    Call<MovieDetail> getMovieDetail(@Path("movie_id") int movie_id);
 
 }
