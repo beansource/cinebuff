@@ -2,12 +2,9 @@ package com.carboni.cinebuff.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -30,13 +27,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView movieImage;
-        public TextView movieTitle, movieDate;
+        public TextView movieTitle, movieDate, movieRating;
 
         public ViewHolder(View itemView) {
             super(itemView);
             movieImage = (ImageView) itemView.findViewById(R.id.movie_list_image);
             movieTitle = (TextView) itemView.findViewById(R.id.movie_list_title);
             movieDate = (TextView) itemView.findViewById(R.id.movie_list_date);
+            movieRating = (TextView) itemView.findViewById(R.id.movie_list_rating);
         }
     }
 
@@ -57,6 +55,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         ResultMovies movie = list.get(position);
         holder.movieTitle.setText(movie.getTitle());
         holder.movieDate.setText(movie.getReleaseDate());
+        holder.movieRating.setText(movie.getVoteAverage() + "");
         Glide
                 .with(context)
                 .load("https://image.tmdb.org/t/p/w500" + movie.getBackdropPath())
