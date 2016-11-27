@@ -1,6 +1,7 @@
 package com.carboni.cinebuff.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.carboni.cinebuff.OnMovieClickListener;
 import com.carboni.cinebuff.R;
 import com.carboni.cinebuff.model.ResultMovies;
 
@@ -22,6 +24,7 @@ import java.util.List;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
     private List<ResultMovies> list;
+    private final OnMovieClickListener listener;
     Context context;
     int lastPosition = -1;
 
@@ -38,33 +41,41 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         }
     }
 
-    public MovieListAdapter(List<ResultMovies> list, Context context) {
+    public MovieListAdapter(List<ResultMovies> list, Context context, @NonNull OnMovieClickListener listener) {
         this.list = list;
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movies_list_backdrop, parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movies_list_item, parent, false);
+        final ImageView image = (ImageView) parent.findViewById(R.id.movie_list_image);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        ResultMovies movie = list.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final ResultMovies movie = list.get(position);
         holder.movieTitle.setText(movie.getTitle());
         holder.movieDate.setText(movie.getReleaseDate());
         holder.movieRating.setText(movie.getVoteAverage() + "");
         Glide
                 .with(context)
                 .load("https://image.tmdb.org/t/p/w500" + movie.getBackdropPath())
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.material_flat)
                 .crossFade()
                 .centerCrop()
                 .override(500, 320) // width, height
                 .into(holder.movieImage);
         setAnimation(holder.itemView, position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClicked(movie, view);
+            }
+        });
     }
 
     @Override
