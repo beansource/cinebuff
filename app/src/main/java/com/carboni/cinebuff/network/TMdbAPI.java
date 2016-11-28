@@ -32,7 +32,7 @@ public interface TMdbAPI {
     /*
     Retrieve details about a Movie
      */
-    @GET("movie/{movie_id}" + "?" + API_KEY)
+    @GET("movie/{movie_id}" + "?api_key=" + API_KEY)
     Call<MovieDetail> getMovieDetail(@Path("movie_id") int movie_id);
 
 }
