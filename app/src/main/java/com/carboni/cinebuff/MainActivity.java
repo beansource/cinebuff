@@ -25,6 +25,7 @@ import com.carboni.cinebuff.listeners.OnMovieClickListener;
 import com.carboni.cinebuff.model.Movies;
 import com.carboni.cinebuff.model.Result;
 import com.carboni.cinebuff.model.ResultMovies;
+import com.carboni.cinebuff.presenter.MovieDetailPresenter;
 import com.carboni.cinebuff.presenter.MoviePresenter;
 import com.carboni.cinebuff.view.MoviesView;
 import com.hootsuite.nachos.ChipConfiguration;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
         ButterKnife.bind(this);
 
         presenter = new MoviePresenter(this);
+
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -119,9 +121,6 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
                 Result person = (Result) chip.getData();
                 ids += person.getId() + ",";
             }
-            if (ids.length() > 0) {
-                String query = ids.substring(0, ids.length() - 1); // remove last comma
-            }
             presenter.attemptSearch(ids);
             animate();
         }
@@ -130,10 +129,6 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
     @Override
     public void showSuccess(Call<Movies> list, Response<Movies> response) {
         List<ResultMovies> movies = response.body().getResults();
-        String output = "";
-        for (ResultMovies movie : movies) {
-            output += movie.getTitle() + "\n";
-        }
         adapter = new MovieListAdapter(movies, this, onMovieClickListener);
         recyclerView.setAdapter(adapter);
     }
