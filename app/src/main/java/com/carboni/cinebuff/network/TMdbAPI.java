@@ -1,6 +1,7 @@
 package com.carboni.cinebuff.network;
 
 import com.carboni.cinebuff.BuildConfig;
+import com.carboni.cinebuff.model.MovieCredits;
 import com.carboni.cinebuff.model.MovieDetail;
 import com.carboni.cinebuff.model.Movies;
 import com.carboni.cinebuff.model.Person;
@@ -34,5 +35,11 @@ public interface TMdbAPI {
      */
     @GET("movie/{movie_id}" + "?api_key=" + API_KEY)
     Call<MovieDetail> getMovieDetail(@Path("movie_id") int movie_id);
+
+    /*
+    Retrieve Movie Cast and Crew
+     */
+    @GET("movie/{movie_id}/credits" + "?api_key=" + API_KEY)
+    Call<MovieCredits> getMovieCredits(@Path("movie_id") int movie_id);
 
 }
