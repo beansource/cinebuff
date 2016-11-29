@@ -1,5 +1,4 @@
-# Cinebuff
-Cinebuff for Android
+# Cinebuff for Android
 
 _An app for movie buffs, created by movie buffs_
 
