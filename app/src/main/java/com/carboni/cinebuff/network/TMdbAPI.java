@@ -10,6 +10,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Observable;
+
 
 /**
  * Created by ericcarboni on 10/4/16.
@@ -41,5 +43,15 @@ public interface TMdbAPI {
      */
     @GET("movie/{movie_id}/credits" + "?api_key=" + API_KEY)
     Call<MovieCredits> getMovieCredits(@Path("movie_id") int movie_id);
+
+    /*
+    Rx Observable Calls
+     */
+
+    @GET("movie/{movie_id}" + "?api_key=" + API_KEY)
+    Observable<MovieDetail> rxGetMovieDetail(@Path("movie_id") int movie_id);
+
+    @GET("movie/{movie_id}/credits" + "?api_key=" + API_KEY)
+    Observable<MovieCredits> rxGetMovieCredits(@Path("movie_id") int movie_id);
 
 }

@@ -2,9 +2,11 @@ package com.carboni.cinebuff.presenter;
 
 import android.util.Log;
 
+import com.carboni.cinebuff.interactors.Interactor;
 import com.carboni.cinebuff.interactors.MovieDetailInteractor;
 import com.carboni.cinebuff.listeners.ShowMovieDetailListener;
 import com.carboni.cinebuff.model.MovieDetail;
+import com.carboni.cinebuff.model.MovieDetailAndCredits;
 import com.carboni.cinebuff.view.MovieDetailView;
 
 import retrofit2.Call;
@@ -25,13 +27,13 @@ public class MovieDetailPresenter implements Presenter, ShowMovieDetailListener 
 
     @Override
     public void attemptSearch(String id) {
-        interactor.loadMovie(Integer.parseInt(id));
+        interactor.rxLoadMovieDetailAndCast(Integer.parseInt(id));
         Log.i("TAG", "Loading movie with id " + id);
     }
 
     @Override
-    public void onNetworkSuccess(Call<MovieDetail> call, Response<MovieDetail> response) {
-        view.showSuccess(call, response);
+    public void onNetworkSuccess(MovieDetailAndCredits o) {
+        view.showSuccess(o);
     }
 
     @Override

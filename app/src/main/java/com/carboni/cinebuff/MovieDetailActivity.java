@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.carboni.cinebuff.model.Genre;
+import com.carboni.cinebuff.model.MovieCredits;
 import com.carboni.cinebuff.model.MovieDetail;
+import com.carboni.cinebuff.model.MovieDetailAndCredits;
 import com.carboni.cinebuff.presenter.MovieDetailPresenter;
 import com.carboni.cinebuff.view.MovieDetailView;
 
@@ -19,8 +21,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView {
 
@@ -65,16 +65,20 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
-    public void showSuccess(Call<MovieDetail> call, Response<MovieDetail> response) {
-        MovieDetail movie = response.body();
+    public void showSuccess(MovieDetailAndCredits o) {
+        MovieDetail movie = o.detail;
+        MovieCredits credits = o.credits;
+
         List<Genre> genres = movie.getGenres();
         String all_genres = "";
         for (Genre genre : genres) {
             all_genres += genre.getName() + " ";
         }
+
         movie_summary.setText(movie.getOverview());
         movie_tagline.setText(movie.getTagline());
         movie_genres.setText(all_genres);
+
         loading.setVisibility(View.GONE);
     }
 
