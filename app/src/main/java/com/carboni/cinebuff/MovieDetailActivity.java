@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -63,6 +64,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         toolbar.setTitle(title);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ImageView image = (ImageView) findViewById(R.id.movie_backdrop);
         Glide.with(this)
@@ -106,5 +109,14 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override
     public void showFailure(Throwable error) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
