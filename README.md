@@ -11,5 +11,6 @@ _An app for movie buffs, created by movie buffs_
 * [Glide](https://github.com/bumptech/glide)
 * [Butterknife](http://jakewharton.github.io/butterknife/)
 * [Nachos](https://github.com/hootsuite/nachos)
+* [RxJava](https://github.com/ReactiveX/RxJava)
 
 ![Built by TMdB](/images/tmdb_logo.png)
