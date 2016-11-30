@@ -14,15 +14,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.carboni.cinebuff.listeners.OnMovieClickListener;
 import com.carboni.cinebuff.R;
-import com.carboni.cinebuff.model.MovieDetail;
 import com.carboni.cinebuff.model.ResultMovies;
-import com.carboni.cinebuff.presenter.MovieDetailPresenter;
-import com.carboni.cinebuff.view.MovieDetailView;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by ericcarboni on 11/20/16.
@@ -55,8 +49,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movies_list_item, parent, false);
-        final ImageView image = (ImageView) parent.findViewById(R.id.movie_list_image);
+        View view = LayoutInflater.from(context).inflate(R.layout.movies_list_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
