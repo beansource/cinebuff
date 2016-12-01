@@ -1,12 +1,15 @@
 package com.carboni.cinebuff;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.carboni.cinebuff.adapter.CastListAdapter;
 import com.carboni.cinebuff.model.Cast;
 import com.carboni.cinebuff.model.Crew;
@@ -48,6 +53,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     TextView movie_director;
     @BindView(R.id.movie_detail_writer)
     TextView movie_writer;
+    @BindView(R.id.movie_detail_cast_header)
+    TextView movie_cast_header;
     @BindView(R.id.movie_detail_loading)
     ProgressBar loading;
     @BindView(R.id.movie_detail_cast)
@@ -99,6 +106,31 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             all_genres += genre.getName() + " ";
         }
 
+        Glide.with(this).
+                load("https://image.tmdb.org/t/p/w500" + movie.getBackdropPath())
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                            @Override
+                            public void onGenerated(Palette palette) {
+                                Palette.Swatch vibrant = palette.getVibrantSwatch();
+                                Palette.Swatch dark = palette.getDarkVibrantSwatch();
+                                if (vibrant != null) {
+                                    movie_genres.setTextColor(vibrant.getRgb());
+                                    movie_director.setTextColor(vibrant.getRgb());
+                                    movie_writer.setTextColor(vibrant.getRgb());
+                                    movie_cast_header.setTextColor(vibrant.getRgb());
+                                }
+                                if (dark != null) {
+                                    movie_summary.setTextColor(dark.getRgb());
+                                }
+                            }
+                        });
+                    }
+                });
+
         movie_summary.setText(movie.getOverview());
         movie_tagline.setText(movie.getTagline());
         movie_genres.setText(all_genres);
@@ -137,4 +169,5 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
