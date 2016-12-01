@@ -12,21 +12,21 @@ import javax.annotation.Generated;
 public class MovieDetail {
 
     private Boolean adult;
-    private String backdropPath;
-    private Object belongsToCollection;
+    private String backdrop_path;
+    private Object belongs_to_collection;
     private Integer budget;
     private List<Genre> genres = new ArrayList<Genre>();
     private String homepage;
     private Integer id;
-    private String imdbId;
-    private String originalLanguage;
-    private String originalTitle;
+    private String imdb_id;
+    private String original_language;
+    private String original_title;
     private String overview;
     private Double popularity;
-    private String posterPath;
+    private String poster_path;
     //private List<ProductionCompany> productionCompanies = new ArrayList<ProductionCompany>();
     //private List<ProductionCountry> productionCountries = new ArrayList<ProductionCountry>();
-    private String releaseDate;
+    private String release_date;
     private Integer revenue;
     private Integer runtime;
     //private List<SpokenLanguage> spokenLanguages = new ArrayList<SpokenLanguage>();
@@ -34,8 +34,8 @@ public class MovieDetail {
     private String tagline;
     private String title;
     private Boolean video;
-    private Double voteAverage;
-    private Integer voteCount;
+    private Double vote_average;
+    private Integer vote_count;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -49,14 +49,14 @@ public class MovieDetail {
      * @return The backdropPath
      */
     public String getBackdropPath() {
-        return backdropPath;
+        return backdrop_path;
     }
 
     /**
      * @return The belongsToCollection
      */
     public Object getBelongsToCollection() {
-        return belongsToCollection;
+        return belongs_to_collection;
     }
 
     /**
@@ -91,21 +91,21 @@ public class MovieDetail {
      * @return The imdbId
      */
     public String getImdbId() {
-        return imdbId;
+        return imdb_id;
     }
 
     /**
      * @return The originalLanguage
      */
     public String getOriginalLanguage() {
-        return originalLanguage;
+        return original_language;
     }
 
     /**
      * @return The originalTitle
      */
     public String getOriginalTitle() {
-        return originalTitle;
+        return original_title;
     }
 
     /**
@@ -126,7 +126,7 @@ public class MovieDetail {
      * @return The posterPath
      */
     public String getPosterPath() {
-        return posterPath;
+        return poster_path;
     }
 
     /**
@@ -149,7 +149,7 @@ public class MovieDetail {
      * @return The releaseDate
      */
     public String getReleaseDate() {
-        return releaseDate;
+        return release_date;
     }
 
     /**
@@ -206,14 +206,14 @@ public class MovieDetail {
      * @return The voteAverage
      */
     public Double getVoteAverage() {
-        return voteAverage;
+        return vote_average;
     }
 
     /**
      * @return The voteCount
      */
     public Integer getVoteCount() {
-        return voteCount;
+        return vote_count;
     }
 
     public Map<String, Object> getAdditionalProperties() {
