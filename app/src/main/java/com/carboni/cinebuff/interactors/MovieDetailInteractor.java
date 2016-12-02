@@ -1,5 +1,6 @@
 package com.carboni.cinebuff.interactors;
 
+import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.listeners.ShowMovieDetailListener;
 import com.carboni.cinebuff.model.MovieCredits;
 import com.carboni.cinebuff.model.MovieDetail;
@@ -30,7 +31,7 @@ public class MovieDetailInteractor {
     private Retrofit initRestAdapter() {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(rxAdapter)
                 .build();

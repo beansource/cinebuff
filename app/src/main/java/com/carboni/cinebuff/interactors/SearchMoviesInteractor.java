@@ -1,13 +1,9 @@
 package com.carboni.cinebuff.interactors;
 
-import android.util.Log;
-
+import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.listeners.OnMovieInteractorFinishedListener;
 import com.carboni.cinebuff.model.Movies;
-import com.carboni.cinebuff.model.ResultMovies;
 import com.carboni.cinebuff.network.TMdbAPI;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,9 +24,8 @@ public class SearchMoviesInteractor implements Callback<Movies> {
 
     // TODO: Inject this using Dagger or other form
     private Retrofit initRestAdapter() {
-        Log.i("SearchPersonInteractor", "Initializing Rest");
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit;
@@ -44,10 +39,6 @@ public class SearchMoviesInteractor implements Callback<Movies> {
 
     @Override
     public void onResponse(Call<Movies> call, Response<Movies> response) {
-        List<ResultMovies> list = response.body().getResults();
-        for (ResultMovies movies : list) {
-            Log.i("SPAM", "Movie name: " + movies.getTitle());
-        }
         listener.onNetworkSuccess(call, response);
     }
 
