@@ -95,7 +95,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         ImageView image = (ImageView) findViewById(R.id.movie_backdrop);
         Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w1280" + image_url)
+                .load(Constants.IMAGE_LARGE + image_url)
                 .placeholder(R.drawable.material_flat)
                 .into(image);
     }
@@ -113,7 +113,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         }
 
         Glide.with(this).
-                load("https://image.tmdb.org/t/p/w500" + movie.getBackdropPath())
+                load(Constants.IMAGE_SMALL + movie.getBackdropPath())
                 .asBitmap()
                 .into(new SimpleTarget<Bitmap>() {
                     @Override

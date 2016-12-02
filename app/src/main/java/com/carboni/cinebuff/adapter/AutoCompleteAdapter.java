@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.carboni.cinebuff.CircleTransformation;
+import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.R;
 import com.carboni.cinebuff.model.Person;
 import com.carboni.cinebuff.model.Result;
@@ -46,7 +47,6 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable, Pers
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.i(TAG, "getView() called");
         final ImageView personImage;
-        String baseImageUrl = "https://image.tmdb.org/t/p/w500";
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.auto_complete_item, parent, false);
@@ -58,11 +58,10 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable, Pers
         ((TextView) convertView.findViewById(R.id.autoCompleteName)).setText(person.getName());
         Glide
                 .with(context)
-                .load(baseImageUrl + person.getProfilePath())
+                .load(Constants.IMAGE_SMALL + person.getProfilePath())
                 .placeholder(R.mipmap.ic_person_placeholder)
                 .transform(new CircleTransformation(context))
                 .into(personImage);
-        Log.i(TAG, "profile path: " + person.getProfilePath());
         return convertView;
     }
 
