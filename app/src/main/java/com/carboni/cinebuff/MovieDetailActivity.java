@@ -1,9 +1,12 @@
 package com.carboni.cinebuff;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView {
 
@@ -55,6 +59,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     TextView movie_writer;
     @BindView(R.id.movie_detail_cast_header)
     TextView movie_cast_header;
+    @BindView(R.id.movie_detail_fab)
+    FloatingActionButton fab;
     @BindView(R.id.movie_detail_loading)
     ProgressBar loading;
     @BindView(R.id.movie_detail_cast)
@@ -122,6 +128,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                                     movie_director.setTextColor(vibrant.getRgb());
                                     movie_writer.setTextColor(vibrant.getRgb());
                                     movie_cast_header.setTextColor(vibrant.getRgb());
+                                    fab.setBackgroundTintList(ColorStateList.valueOf(vibrant.getRgb()));
                                 }
                                 if (dark != null) {
                                     movie_summary.setTextColor(dark.getRgb());
@@ -159,6 +166,11 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override
     public void showFailure(Throwable error) {
 
+    }
+
+    @OnClick(R.id.movie_detail_fab)
+    public void fabClick() {
+        Snackbar.make(details_view, "Start playing movie trailer", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
