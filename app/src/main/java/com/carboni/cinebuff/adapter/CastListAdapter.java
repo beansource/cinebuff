@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.carboni.cinebuff.CircleTransformation;
+import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.R;
 import com.carboni.cinebuff.model.Cast;
 
@@ -52,7 +53,7 @@ public class CastListAdapter extends RecyclerView.Adapter<CastListAdapter.ViewHo
         holder.castName.setText(castMember.getName());
         Glide
                 .with(context)
-                .load("https://image.tmdb.org/t/p/w500" + castMember.getProfilePath())
+                .load(Constants.IMAGE_SMALL + castMember.getProfilePath())
                 .placeholder(R.mipmap.ic_person_placeholder)
                 .crossFade()
                 .centerCrop()
