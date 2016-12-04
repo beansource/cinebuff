@@ -133,9 +133,9 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
             }
             presenter.attemptSearch(ids);
             animate();
+            loading.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
         }
-        recyclerView.setVisibility(View.INVISIBLE);
-        loading.setVisibility(View.VISIBLE);
     }
 
     @Override
