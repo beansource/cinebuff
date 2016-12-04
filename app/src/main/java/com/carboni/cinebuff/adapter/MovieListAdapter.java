@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.listeners.OnMovieClickListener;
 import com.carboni.cinebuff.R;
 import com.carboni.cinebuff.model.ResultMovies;
@@ -55,24 +57,25 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ResultMovies movie = list.get(position);
+        holder.movieImage.setTransitionName("backdrop_" + movie.getId());
         holder.movieTitle.setText(movie.getTitle());
         holder.movieDate.setText(movie.getReleaseDate());
         holder.movieRating.setText(movie.getVoteAverage() + "");
         Glide
                 .with(context)
-                .load("https://image.tmdb.org/t/p/w500" + movie.getBackdropPath())
-                .placeholder(R.drawable.material_flat)
-                .crossFade()
+                .load(Constants.IMAGE_LARGE + movie.getBackdropPath())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                //.placeholder(R.drawable.material_flat)
                 .centerCrop()
-                .override(500, 320) // width, height
+                .crossFade()
                 .into(holder.movieImage);
         setAnimation(holder.itemView, position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClicked(movie, view);
+                listener.onItemClicked(movie, view, position);
             }
         });
     }

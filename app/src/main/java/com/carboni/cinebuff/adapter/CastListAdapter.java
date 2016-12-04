@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.carboni.cinebuff.CircleTransformation;
 import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.R;
@@ -53,7 +54,8 @@ public class CastListAdapter extends RecyclerView.Adapter<CastListAdapter.ViewHo
         holder.castName.setText(castMember.getName());
         Glide
                 .with(context)
-                .load(Constants.IMAGE_SMALL + castMember.getProfilePath())
+                .load(Constants.IMAGE_LARGE + castMember.getProfilePath())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.ic_person_placeholder)
                 .crossFade()
                 .centerCrop()

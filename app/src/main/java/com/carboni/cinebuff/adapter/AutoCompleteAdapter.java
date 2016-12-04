@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.carboni.cinebuff.CircleTransformation;
 import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.R;
@@ -59,6 +60,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable, Pers
         Glide
                 .with(context)
                 .load(Constants.IMAGE_SMALL + person.getProfilePath())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.ic_person_placeholder)
                 .transform(new CircleTransformation(context))
                 .into(personImage);
