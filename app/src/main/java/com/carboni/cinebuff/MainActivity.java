@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
     RelativeLayout main;
     @BindView(R.id.movie_list)
     RecyclerView recyclerView;
+    @BindView(R.id.movie_search_loading)
+    ProgressBar loading;
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -131,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
             presenter.attemptSearch(ids);
             animate();
         }
+        recyclerView.setVisibility(View.INVISIBLE);
+        loading.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -138,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
         List<ResultMovies> movies = response.body().getResults();
         adapter = new MovieListAdapter(movies, this, onMovieClickListener);
         recyclerView.setAdapter(adapter);
+        loading.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
