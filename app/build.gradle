@@ -14,7 +14,7 @@ android {
     }
     productFlavors {
         demo {
-            versionName = "0.0.3-alpha"
+            versionName = "0.0.4-alpha"
         }
     }
     buildTypes {
