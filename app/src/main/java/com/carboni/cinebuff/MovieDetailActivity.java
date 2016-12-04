@@ -12,15 +12,18 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.carboni.cinebuff.adapter.CastListAdapter;
@@ -77,10 +80,16 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         setContentView(R.layout.movie_detail);
         ButterKnife.bind(this);
 
+        // Set enter transition for content that wasn't shared
+        Slide slide = new Slide(Gravity.BOTTOM);
+        slide.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.linear_out_slow_in));
+        // getWindow().setEnterTransition(slide);
+
         Intent intent = getIntent();
         String title = intent.getStringExtra("MOVIE_TITLE");
         String image_url = intent.getStringExtra("MOVIE_IMAGE_URL");
         int movie_id = intent.getIntExtra("MOVIE_ID", 0);
+        backdrop.setTransitionName("backdrop_" + movie_id);
 
         presenter = new MovieDetailPresenter(this);
         presenter.attemptSearch(movie_id + "");
@@ -96,7 +105,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         ImageView image = (ImageView) findViewById(R.id.movie_backdrop);
         Glide.with(this)
                 .load(Constants.IMAGE_LARGE + image_url)
-                .placeholder(R.drawable.material_flat)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                //.placeholder(R.drawable.material_flat)
                 .into(image);
     }
 
@@ -178,6 +188,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                supportFinishAfterTransition();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

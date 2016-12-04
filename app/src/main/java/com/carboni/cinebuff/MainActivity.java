@@ -1,22 +1,26 @@
 package com.carboni.cinebuff;
 
-import android.animation.Animator;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.carboni.cinebuff.adapter.AutoCompleteAdapter;
@@ -25,7 +29,6 @@ import com.carboni.cinebuff.listeners.OnMovieClickListener;
 import com.carboni.cinebuff.model.Movies;
 import com.carboni.cinebuff.model.Result;
 import com.carboni.cinebuff.model.ResultMovies;
-import com.carboni.cinebuff.presenter.MovieDetailPresenter;
 import com.carboni.cinebuff.presenter.MoviePresenter;
 import com.carboni.cinebuff.view.MoviesView;
 import com.hootsuite.nachos.ChipConfiguration;
@@ -84,27 +87,31 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
             @Override
             public ChipSpan createChip(@NonNull Context context, @NonNull CharSequence text, Object data) {
                 Result person = (Result) data;
-                return new ChipSpan(context, person.getName(), ContextCompat.getDrawable(MainActivity.this, R.mipmap.ic_person_white_36dp), data);
+                return new ChipSpan(context, person.getName(), ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_person_placeholder_24dp), data);
             }
 
             @Override
             public void configureChip(@NonNull ChipSpan chip, @NonNull ChipConfiguration chipConfiguration) {
                 super.configureChip(chip, chipConfiguration);
+                chip.setIconBackgroundColor(R.color.colorPrimaryDark);
                 chip.setShowIconOnLeft(true);
             }
         }, ChipSpan.class));
 
         onMovieClickListener = new OnMovieClickListener() {
             @Override
-            public void onItemClicked(Object item, Object view) {
+            public void onItemClicked(Object item, View view, int position) {
                 ResultMovies movie = (ResultMovies) item;
-                Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
+                Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
                 intent.putExtra("MOVIE_TITLE", movie.getTitle());
                 intent.putExtra("MOVIE_ID", movie.getId());
                 intent.putExtra("MOVIE_IMAGE_URL", movie.getBackdropPath());
-                // ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, "target");
-                startActivity(intent//, options.toBundle());
-                );
+                intent.putExtra("POSITION", position);
+
+                ActivityOptions options = ActivityOptions
+                        .makeSceneTransitionAnimation(MainActivity.this,
+                                new android.util.Pair<View, String>(view.findViewById(R.id.movie_list_image), "backdrop_" + movie.getId()));
+                startActivity(intent, options.toBundle());
             }
         };
 
@@ -139,15 +146,7 @@ public class MainActivity extends AppCompatActivity implements MoviesView {
     }
 
     public void animate() {
-        int x = recyclerView.getRight();
-        int y = recyclerView.getBottom();
-
-        int startRad = 0;
-        int endRad = (int) Math.hypot(main.getWidth(), main.getHeight());
-
-        Animator animation = ViewAnimationUtils.createCircularReveal(recyclerView, x, y, startRad, endRad);
         recyclerView.setVisibility(View.VISIBLE);
-        // animation.start();
     }
 
     public void hideKeyboard() {

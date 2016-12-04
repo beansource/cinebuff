@@ -8,6 +8,15 @@
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowSharedElementsUseOverlay">true</item>
+        <!--
+        <item name="android:windowEnterTransition">@transition/details_window_enter_transition
+        </item>
+        <item name="android:windowReturnTransition">@transition/details_window_return_transition
+        </item>
+        -->
+        <item name="android:windowSharedElementEnterTransition">@transition/shared_main_detail
+        </item>
     </style>
 
     <style name="AppTheme.NoActionBar">
