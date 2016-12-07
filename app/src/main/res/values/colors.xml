@@ -3,4 +3,8 @@
     <color name="colorPrimary">#6A6E91</color>
     <color name="colorPrimaryDark">#44486C</color>
     <color name="colorAccent">#25C8AE</color>
+
+    <!-- Movie list -->
+    <color name="grey_ripple">#8ddd</color>
+    <color name="title_background">#66000000</color>
 </resources>
