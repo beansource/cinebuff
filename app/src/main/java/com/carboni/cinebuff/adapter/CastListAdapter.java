@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.carboni.cinebuff.CircleTransformation;
+import com.carboni.cinebuff.util.glide.CircleTransformation;
 import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.R;
 import com.carboni.cinebuff.model.Cast;

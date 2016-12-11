@@ -1,4 +1,4 @@
-package com.carboni.cinebuff;
+package com.carboni.cinebuff.util.glide;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -57,6 +57,6 @@ public class CircleTransformation extends BitmapTransformation {
     @Override
     public String getId() {
         // Return some id that uniquely identifies the transformation
-        return "com.carboni.cinebuff.CircleTransformation";
+        return "com.carboni.cinebuff.util.glide.CircleTransformation";
     }
 }
