@@ -83,7 +83,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         // Set enter transition for content that wasn't shared
         Slide slide = new Slide(Gravity.BOTTOM);
         slide.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.linear_out_slow_in));
-        // getWindow().setEnterTransition(slide);
+        //getWindow().setEnterTransition(slide);
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("MOVIE_TITLE");
@@ -107,7 +107,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                 .load(Constants.IMAGE_LARGE + image_url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 //.placeholder(R.drawable.material_flat)
-                .into(image);
+                .into(backdrop);
     }
 
     @Override
@@ -133,6 +133,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                             public void onGenerated(Palette palette) {
                                 Palette.Swatch vibrant = palette.getVibrantSwatch();
                                 Palette.Swatch dark = palette.getDarkVibrantSwatch();
+
                                 if (vibrant != null) {
                                     movie_genres.setTextColor(vibrant.getRgb());
                                     movie_director.setTextColor(vibrant.getRgb());
@@ -141,7 +142,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                                     fab.setBackgroundTintList(ColorStateList.valueOf(vibrant.getRgb()));
                                 }
                                 if (dark != null) {
-                                    movie_summary.setTextColor(dark.getRgb());
+                                    // movie_summary.setTextColor(vibrant.getRgb());
                                 }
                             }
                         });
@@ -158,7 +159,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             if (member.getJob().toString().equals("Director")) {
                 dir = member.getName();
             }
-            if (member.getJob().toString().equals("Screenplay") || member.getJob().toString().equals("Writer")) {
+            if (member.getJob().toString().equals("Screenplay") || member.getJob().toString().equals("Writer") ||
+                    member.getJob().toString().equals("Novel")) {
                 writ = member.getName();
             }
         }
@@ -171,6 +173,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         loading.setVisibility(View.GONE);
         details_view.setVisibility(View.VISIBLE); // TODO: Animate this view in from bottom (See Plaid)
+        fab.show();
     }
 
     @Override
