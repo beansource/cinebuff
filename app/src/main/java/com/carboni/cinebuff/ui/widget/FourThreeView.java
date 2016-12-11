@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.carboni.cinebuff.util;
+package com.carboni.cinebuff.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
