@@ -13,4 +13,5 @@
 
     <!-- Data binding -->
     <string name="transition_photo">backdrop</string>
+    <string name="transition_background">background</string>
 </resources>

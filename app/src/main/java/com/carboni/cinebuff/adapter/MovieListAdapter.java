@@ -67,7 +67,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                 .with(context)
                 .load(Constants.IMAGE_LARGE + movie.getBackdropPath())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .placeholder(R.drawable.material_flat)
+                //.placeholder(R.drawable.material_flat)
                 .crossFade()
                 .into(holder.movieImage);
         setAnimation(holder.itemView, position);
