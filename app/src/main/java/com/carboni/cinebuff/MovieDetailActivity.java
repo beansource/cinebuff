@@ -1,10 +1,13 @@
 package com.carboni.cinebuff;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,8 +26,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.carboni.cinebuff.adapter.CastListAdapter;
 import com.carboni.cinebuff.model.Cast;
 import com.carboni.cinebuff.model.Crew;
@@ -34,7 +39,13 @@ import com.carboni.cinebuff.model.MovieCredits;
 import com.carboni.cinebuff.model.MovieDetail;
 import com.carboni.cinebuff.model.MovieDetailAndCredits;
 import com.carboni.cinebuff.presenter.MovieDetailPresenter;
+import com.carboni.cinebuff.util.ColorUtils;
+import com.carboni.cinebuff.util.ViewUtils;
+import com.carboni.cinebuff.util.glide.GlideUtils;
 import com.carboni.cinebuff.view.MovieDetailView;
+
+import static com.carboni.cinebuff.util.AnimUtils.getFastOutLinearInInterpolator;
+import static com.carboni.cinebuff.util.AnimUtils.getFastOutSlowInInterpolator;
 
 import java.util.List;
 
@@ -46,6 +57,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout collapseToolbar;
     @BindView(R.id.movie_backdrop)
     ImageView backdrop;
     @BindView(R.id.constraint_layout)
@@ -80,11 +93,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         setContentView(R.layout.movie_detail);
         ButterKnife.bind(this);
 
-        // Set enter transition for content that wasn't shared
-        Slide slide = new Slide(Gravity.BOTTOM);
-        slide.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.interpolator.linear_out_slow_in));
-        //getWindow().setEnterTransition(slide);
-
         Intent intent = getIntent();
         String title = intent.getStringExtra("MOVIE_TITLE");
         String image_url = intent.getStringExtra("MOVIE_IMAGE_URL");
@@ -102,9 +110,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ImageView image = (ImageView) findViewById(R.id.movie_backdrop);
         Glide.with(this)
                 .load(Constants.IMAGE_LARGE + image_url)
+                .listener(movieColorListener)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 //.placeholder(R.drawable.material_flat)
                 .into(backdrop);
@@ -121,33 +129,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         for (Genre genre : genres) {
             all_genres += genre.getName() + " ";
         }
-
-        Glide.with(this).
-                load(Constants.IMAGE_SMALL + movie.getBackdropPath())
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                            @Override
-                            public void onGenerated(Palette palette) {
-                                Palette.Swatch vibrant = palette.getVibrantSwatch();
-                                Palette.Swatch dark = palette.getDarkVibrantSwatch();
-
-                                if (vibrant != null) {
-                                    movie_genres.setTextColor(vibrant.getRgb());
-                                    movie_director.setTextColor(vibrant.getRgb());
-                                    movie_writer.setTextColor(vibrant.getRgb());
-                                    movie_cast_header.setTextColor(vibrant.getRgb());
-                                    fab.setBackgroundTintList(ColorStateList.valueOf(vibrant.getRgb()));
-                                }
-                                if (dark != null) {
-                                    // movie_summary.setTextColor(vibrant.getRgb());
-                                }
-                            }
-                        });
-                    }
-                });
 
         movie_summary.setText(movie.getOverview());
         movie_tagline.setText(movie.getTagline());
@@ -180,6 +161,82 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     public void showFailure(Throwable error) {
 
     }
+
+    private RequestListener movieColorListener = new RequestListener<String, GlideDrawable>() {
+        @Override
+        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+            final Bitmap bitmap = GlideUtils.getBitmap(resource);
+            Palette
+                    .from(bitmap)
+                    .maximumColorCount(3)
+                    .clearFilters() // ignore black/white hues
+                    .generate(new Palette.PaletteAsyncListener() {
+                        @Override
+                        public void onGenerated(Palette palette) {
+                            Palette.Swatch vibrant = palette.getVibrantSwatch();
+                            final Palette.Swatch color = ColorUtils.getMostPopulousSwatch(palette);
+                            boolean isDark;
+                            @ColorUtils.Lightness int lightness = ColorUtils.isDark(palette);
+                            if (lightness == ColorUtils.LIGHTNESS_UNKNOWN) {
+                                isDark = ColorUtils.isDark(bitmap, bitmap.getWidth() / 2, 0);
+                            } else {
+                                isDark = lightness == ColorUtils.IS_DARK;
+                            }
+
+                            if (vibrant != null) {
+                                movie_genres.setTextColor(vibrant.getRgb());
+                                movie_director.setTextColor(vibrant.getRgb());
+                                movie_writer.setTextColor(vibrant.getRgb());
+                                movie_cast_header.setTextColor(vibrant.getRgb());
+                                // fab.setBackgroundTintList(ColorStateList.valueOf(vibrant.getRgb()));
+                            }
+                            if (color != null) {
+                                collapseToolbar.setBackgroundColor(color.getRgb());
+                                collapseToolbar.setContentScrimColor(color.getRgb());
+                                collapseToolbar.setStatusBarScrimColor(color.getRgb());
+                                fab.setBackgroundTintList(ColorStateList.valueOf(color.getRgb()));
+                            }
+
+                            // make back button and title text light
+                            if (!isDark) {
+
+                            }
+
+                            // color status bar
+                            int statusBarColor = getWindow().getStatusBarColor();
+                            final Palette.Swatch topColor = ColorUtils.getMostPopulousSwatch(palette);
+                            if (topColor != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                statusBarColor = ColorUtils.scrimify(topColor.getRgb(), isDark, 0.075f);
+                                // set light on M+
+                                if (!isDark && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    ViewUtils.setLightStatusBar(backdrop);
+                                }
+                            }
+
+                            if (statusBarColor != getWindow().getStatusBarColor()) {
+                                ValueAnimator statusBarColorAnim = ValueAnimator.ofArgb(getWindow().getStatusBarColor(), statusBarColor);
+                                statusBarColorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                    @Override
+                                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                                        getWindow().setStatusBarColor((int) valueAnimator.getAnimatedValue());
+                                    }
+                                });
+                                statusBarColorAnim.setDuration(1000L);
+                                statusBarColorAnim.setInterpolator(getFastOutLinearInInterpolator(MovieDetailActivity.this));
+                                // statusBarColorAnim.start();
+                            }
+                        }
+                    });
+            return false;
+        }
+
+        @Override
+        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+            return false;
+        }
+
+
+    };
 
     @OnClick(R.id.movie_detail_fab)
     public void fabClick() {
