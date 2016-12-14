@@ -15,11 +15,8 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,10 +25,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.carboni.cinebuff.adapter.CastListAdapter;
+import com.carboni.cinebuff.adapter.crew.CrewMember;
+import com.carboni.cinebuff.adapter.crew.Department;
 import com.carboni.cinebuff.model.Cast;
 import com.carboni.cinebuff.model.Crew;
 import com.carboni.cinebuff.model.Genre;
@@ -39,15 +36,20 @@ import com.carboni.cinebuff.model.MovieCredits;
 import com.carboni.cinebuff.model.MovieDetail;
 import com.carboni.cinebuff.model.MovieDetailAndCredits;
 import com.carboni.cinebuff.presenter.MovieDetailPresenter;
+import com.carboni.cinebuff.adapter.crew.DepartmentAdapter;
 import com.carboni.cinebuff.util.ColorUtils;
 import com.carboni.cinebuff.util.ViewUtils;
 import com.carboni.cinebuff.util.glide.GlideUtils;
 import com.carboni.cinebuff.view.MovieDetailView;
 
 import static com.carboni.cinebuff.util.AnimUtils.getFastOutLinearInInterpolator;
-import static com.carboni.cinebuff.util.AnimUtils.getFastOutSlowInInterpolator;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,15 +77,21 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     TextView movie_writer;
     @BindView(R.id.movie_detail_cast_header)
     TextView movie_cast_header;
+    @BindView(R.id.movie_detail_crew_header)
+    TextView movie_crew_header;
     @BindView(R.id.movie_detail_fab)
     FloatingActionButton fab;
     @BindView(R.id.movie_detail_loading)
     ProgressBar loading;
     @BindView(R.id.movie_detail_cast)
     RecyclerView cast_recycler_view;
+    @BindView(R.id.movie_detail_crew)
+    RecyclerView crew_recycler_view;
 
     private RecyclerView.Adapter castAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private DepartmentAdapter crewAdapter;
+    private RecyclerView.LayoutManager castLayoutManager;
+    private RecyclerView.LayoutManager crewLayoutManager;
 
     MovieDetailPresenter presenter;
 
@@ -102,8 +110,11 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         presenter = new MovieDetailPresenter(this);
         presenter.attemptSearch(movie_id + "");
 
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        cast_recycler_view.setLayoutManager(layoutManager);
+        castLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        crewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+        cast_recycler_view.setLayoutManager(castLayoutManager);
+        crew_recycler_view.setLayoutManager(crewLayoutManager);
 
         toolbar.setTitle(title);
         setSupportActionBar(toolbar);
@@ -152,6 +163,34 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         castAdapter = new CastListAdapter(cast, this); //TODO : Set up click listener
         cast_recycler_view.setAdapter(castAdapter);
 
+        // Heavy lifting for organizing crew departments
+        List<String> allDepartments = new ArrayList<>();
+        for (Crew member : crew) { // create a list of crew members and add it to a List<CrewMember>
+            allDepartments.add(member.getDepartment());
+        }
+        Set<String> uniqueDepartments = getDepartments(allDepartments); // get only unique department names
+
+        Map<String, List<CrewMember>> depts = new HashMap<>(); // department name, crew member
+        for (String s : uniqueDepartments) { // look at each unique department name
+            List<CrewMember> peeps = new ArrayList<>();
+            for (Crew member : crew) { // step through each crew member
+                if (s.equals(member.getDepartment())) { // get crew members for each department
+                    peeps.add(new CrewMember(member));
+                }
+            }
+            depts.put(s, peeps);
+        }
+
+        // now create Department objects with department name and associated crew members
+        List<Department> departmentSet = new ArrayList<>();
+        for (Map.Entry<String, List<CrewMember>> entry : depts.entrySet()) {
+            departmentSet.add(new Department(entry.getKey(), entry.getValue()));
+        }
+
+        // set expandable adapter for recycler view
+        crewAdapter = new DepartmentAdapter(this, departmentSet);
+        crew_recycler_view.setAdapter(crewAdapter);
+
         loading.setVisibility(View.GONE);
         details_view.setVisibility(View.VISIBLE); // TODO: Animate this view in from bottom (See Plaid)
         fab.show();
@@ -188,6 +227,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                                 movie_director.setTextColor(vibrant.getRgb());
                                 movie_writer.setTextColor(vibrant.getRgb());
                                 movie_cast_header.setTextColor(vibrant.getRgb());
+                                movie_crew_header.setTextColor(vibrant.getRgb());
                                 // fab.setBackgroundTintList(ColorStateList.valueOf(vibrant.getRgb()));
                             }
                             if (color != null) {
@@ -252,6 +292,16 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /*
+    Eliminates all duplicate items in a List
+    Returns a Set of strings
+     */
+    public Set<String> getDepartments(List<String> list) {
+        List<String> all = list;
+        Set<String> uniqueDepartments = new HashSet<>(all);
+        return uniqueDepartments;
     }
 
 }
