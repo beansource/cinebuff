@@ -125,14 +125,45 @@
             android:id="@+id/movie_detail_cast"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="128dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
             android:clipToPadding="false"
+            android:paddingLeft="@dimen/movie_detail_cast_margin"
+            android:paddingRight="@dimen/movie_detail_cast_margin"
+            app:layout_constraintBottom_toBottomOf="@+id/movie_detail_crew_header"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_detail_cast_header" />
+
+        <TextView
+            android:id="@+id/movie_detail_crew_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/movie_detail_margin"
+            android:layout_marginStart="@dimen/movie_detail_margin"
+            android:layout_marginTop="8dp"
+            android:text="@string/movie_detail_crew_header"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_detail_cast" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/movie_detail_crew"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clipToPadding="false"
+            android:focusableInTouchMode="false"
+            android:nestedScrollingEnabled="false"
+            android:paddingBottom="16dp"
             android:paddingLeft="@dimen/movie_detail_cast_margin"
             android:paddingRight="@dimen/movie_detail_cast_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_detail_cast_header" />
+            app:layout_constraintTop_toBottomOf="@+id/movie_detail_crew_header" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
