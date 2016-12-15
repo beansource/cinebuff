@@ -1,6 +1,7 @@
 package com.carboni.cinebuff.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.carboni.cinebuff.listeners.OnPersonClickListener;
 import com.carboni.cinebuff.util.glide.CircleTransformation;
 import com.carboni.cinebuff.Constants;
 import com.carboni.cinebuff.R;
@@ -23,6 +25,7 @@ import java.util.List;
 
 public class CastListAdapter extends RecyclerView.Adapter<CastListAdapter.ViewHolder> {
     private List<Cast> list;
+    private final OnPersonClickListener listener;
     Context context;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -36,9 +39,10 @@ public class CastListAdapter extends RecyclerView.Adapter<CastListAdapter.ViewHo
         }
     }
 
-    public CastListAdapter(List<Cast> list, Context context) {
+    public CastListAdapter(List<Cast> list, Context context, @NonNull OnPersonClickListener listener) {
         this.list = list;
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class CastListAdapter extends RecyclerView.Adapter<CastListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Cast castMember = list.get(position);
         holder.castName.setText(castMember.getName());
         Glide
@@ -61,6 +65,12 @@ public class CastListAdapter extends RecyclerView.Adapter<CastListAdapter.ViewHo
                 .centerCrop()
                 .transform(new CircleTransformation(context))
                 .into(holder.castImage);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClicked(castMember, view, position);
+            }
+        });
     }
 
     @Override

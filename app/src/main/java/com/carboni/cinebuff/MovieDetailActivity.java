@@ -29,6 +29,7 @@ import com.bumptech.glide.request.target.Target;
 import com.carboni.cinebuff.adapter.CastListAdapter;
 import com.carboni.cinebuff.adapter.crew.CrewMember;
 import com.carboni.cinebuff.adapter.crew.Department;
+import com.carboni.cinebuff.listeners.OnPersonClickListener;
 import com.carboni.cinebuff.model.Cast;
 import com.carboni.cinebuff.model.Crew;
 import com.carboni.cinebuff.model.Genre;
@@ -93,6 +94,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private RecyclerView.LayoutManager castLayoutManager;
     private RecyclerView.LayoutManager crewLayoutManager;
 
+    OnPersonClickListener onPersonClickListener;
+
     MovieDetailPresenter presenter;
 
     @Override
@@ -103,7 +106,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("MOVIE_TITLE");
-        String image_url = intent.getStringExtra("MOVIE_IMAGE_URL");
+        final String image_url = intent.getStringExtra("MOVIE_IMAGE_URL");
         int movie_id = intent.getIntExtra("MOVIE_ID", 0);
         backdrop.setTransitionName("backdrop_" + movie_id);
 
@@ -127,6 +130,18 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 //.placeholder(R.drawable.material_flat)
                 .into(backdrop);
+
+        onPersonClickListener = new OnPersonClickListener() {
+            @Override
+            public void onItemClicked(Object item, View view, int position) {
+                if (item instanceof Cast) {
+                    Snackbar.make(details_view, "Clicked id " + ((Cast) item).getId(), Snackbar.LENGTH_SHORT).show();
+                } else if (item instanceof Crew) {
+                    Snackbar.make(details_view, "Clicked id " + ((Crew) item).getId(), Snackbar.LENGTH_SHORT).show();
+                }
+
+            }
+        };
     }
 
     @Override
@@ -160,9 +175,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         movie_writer.setText("WRITER: " + writ);
 
         // Cast list recycler view
-        castAdapter = new CastListAdapter(cast, this); //TODO : Set up click listener
+        castAdapter = new CastListAdapter(cast, this, onPersonClickListener);
         cast_recycler_view.setAdapter(castAdapter);
 
+        // TODO: Move all of this into separate method
         // Heavy lifting for organizing crew departments
         List<String> allDepartments = new ArrayList<>();
         for (Crew member : crew) { // create a list of crew members and add it to a List<CrewMember>
@@ -274,7 +290,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
             return false;
         }
-
 
     };
 
