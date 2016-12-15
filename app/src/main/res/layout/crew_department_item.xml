@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="32dp"
+    android:layout_height="48dp"
     android:foreground="@drawable/gray_ripple"
     android:orientation="horizontal"
     android:padding="8dp">
@@ -13,12 +13,10 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
-        android:text="department"
-        android:textAllCaps="true"
-        android:textStyle="bold" />
+        android:text="department" />
 
     <ImageView
-        android:id="@+id/crew_department_expand"
+        android:id="@+id/crew_department_expand_collapse_view"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_alignParentRight="true"

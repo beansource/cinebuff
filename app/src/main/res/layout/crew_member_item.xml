@@ -3,6 +3,9 @@
     android:id="@+id/crew_member_item_textview"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
     android:layout_marginBottom="8dp"
-    android:layout_marginLeft="32dp"
-    android:layout_marginTop="8dp" />
+    android:layout_marginLeft="38dp"
+    android:layout_marginTop="8dp"
+    android:foreground="@drawable/gray_ripple"
+    android:textSize="13sp" />
