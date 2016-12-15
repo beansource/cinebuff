@@ -10,6 +10,7 @@
     <!-- Movie Detail -->
     <string name="title_activity_movie_detail">MovieDetail</string>
     <string name="movie_detail_cast_header">cast</string>
+    <string name="movie_detail_crew_header">crew</string>
 
     <!-- Data binding -->
     <string name="transition_photo">backdrop</string>
