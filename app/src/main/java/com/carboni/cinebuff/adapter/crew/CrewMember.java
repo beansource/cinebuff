@@ -7,7 +7,7 @@ import com.carboni.cinebuff.model.Crew;
  */
 
 public class CrewMember {
-    private String name;
+    private String name, job;
     private Object profile_path;
     private Integer id;
 
@@ -15,18 +15,23 @@ public class CrewMember {
         this.name = member.getName();
         this.profile_path = member.getProfilePath();
         this.id = member.getId();
+        this.job = member.getJob();
     }
 
     public String getName() {
         return name;
     }
 
-    public Object get_profile_path() {
+    public Object getProfilePath() {
         return profile_path;
     }
 
-    public Integer get_id() {
+    public Integer getId() {
         return id;
+    }
+
+    public String getJob() {
+        return job;
     }
 
 }

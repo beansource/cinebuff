@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.carboni.cinebuff.R;
+import com.carboni.cinebuff.listeners.OnPersonClickListener;
 
 import java.util.List;
 
@@ -18,10 +19,12 @@ import java.util.List;
 
 public class DepartmentAdapter extends ExpandableRecyclerAdapter<DepartmentViewHolder, CrewMemberViewHolder> {
     private LayoutInflater layoutInflater;
+    private final OnPersonClickListener listener;
 
-    public DepartmentAdapter(Context context, @NonNull List<? extends ParentListItem> parentListItem) {
+    public DepartmentAdapter(Context context, @NonNull List<? extends ParentListItem> parentListItem, @NonNull OnPersonClickListener listener) {
         super(parentListItem);
         layoutInflater = LayoutInflater.from(context);
+        this.listener = listener;
     }
 
     /*
@@ -55,8 +58,14 @@ public class DepartmentAdapter extends ExpandableRecyclerAdapter<DepartmentViewH
     onBind for the child view holder
      */
     @Override
-    public void onBindChildViewHolder(CrewMemberViewHolder crewViewHolder, int position, Object childListItem) {
-        CrewMember member = (CrewMember) childListItem;
+    public void onBindChildViewHolder(CrewMemberViewHolder crewViewHolder, final int position, Object childListItem) {
+        final CrewMember member = (CrewMember) childListItem;
+        crewViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClicked(member, view, position);
+            }
+        });
         crewViewHolder.bind(member);
     }
 }

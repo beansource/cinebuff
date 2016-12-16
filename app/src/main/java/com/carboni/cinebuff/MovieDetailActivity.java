@@ -135,9 +135,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             @Override
             public void onItemClicked(Object item, View view, int position) {
                 if (item instanceof Cast) {
-                    Snackbar.make(details_view, "Clicked id " + ((Cast) item).getId(), Snackbar.LENGTH_SHORT).show();
-                } else if (item instanceof Crew) {
-                    Snackbar.make(details_view, "Clicked id " + ((Crew) item).getId(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(details_view, "Open " + ((Cast) item).getName() + "'s page", Snackbar.LENGTH_SHORT).show();
+                } else if (item instanceof CrewMember) {
+                    Snackbar.make(details_view, "Open " + ((CrewMember) item).getName() + "'s page", Snackbar.LENGTH_SHORT).show();
                 }
 
             }
@@ -204,7 +204,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         }
 
         // set expandable adapter for recycler view
-        crewAdapter = new DepartmentAdapter(this, departmentSet);
+        crewAdapter = new DepartmentAdapter(this, departmentSet, onPersonClickListener);
         crew_recycler_view.setAdapter(crewAdapter);
 
         loading.setVisibility(View.GONE);
