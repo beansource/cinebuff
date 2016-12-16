@@ -68,10 +68,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     ConstraintLayout details_view;
     @BindView(R.id.movie_detail_summary)
     TextView movie_summary;
-    @BindView(R.id.movie_detail_tagline)
-    TextView movie_tagline;
     @BindView(R.id.movie_detail_genres)
     TextView movie_genres;
+    @BindView(R.id.movie_detail_runtime)
+    TextView movie_runtime;
     @BindView(R.id.movie_detail_director)
     TextView movie_director;
     @BindView(R.id.movie_detail_writer)
@@ -157,7 +157,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         }
 
         movie_summary.setText(movie.getOverview());
-        movie_tagline.setText(movie.getTagline());
+        movie_runtime.setText(movie.getRuntime());
         movie_genres.setText(all_genres);
 
         // TODO: This is terrible, we can figure out a better way to get director
@@ -240,6 +240,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
                             if (vibrant != null) {
                                 movie_genres.setTextColor(vibrant.getRgb());
+                                movie_runtime.setTextColor(vibrant.getRgb());
                                 movie_director.setTextColor(vibrant.getRgb());
                                 movie_writer.setTextColor(vibrant.getRgb());
                                 movie_cast_header.setTextColor(vibrant.getRgb());

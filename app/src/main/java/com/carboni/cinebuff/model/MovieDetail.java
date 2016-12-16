@@ -160,10 +160,13 @@ public class MovieDetail {
     }
 
     /**
-     * @return The runtime
+     * @return The runtime in hours, minutes
      */
-    public Integer getRuntime() {
-        return runtime;
+    public String getRuntime() {
+        int hrs = runtime / 60;
+        String mins = Integer.toString(runtime % 60);
+        mins = mins.equals("0") ? "" : mins + "min";
+        return hrs + "h " + mins;
     }
 
     /**
